@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe62fbe6-6a07-4d29-8a47-547d14e41a23" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/ETL-pipeline.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="fe62fbe6-6a07-4d29-8a47-547d14e41a23" name="Changes" comment="Add .gitignore and .idea/">
+      <change afterPath="$PROJECT_DIR$/config/db_config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/mappings.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/sample.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etl/extract.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etl/load.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etl/pipeline.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/etl/transform.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +27,25 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "GloomyFoodeater"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/GloomyFoodeater/ETL-pipeline.git",
+    "accountId": "a24f83e4-2519-48c9-9263-2a7907f58e08"
+  }
+}]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 8
 }]]></component>
@@ -40,9 +60,14 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main"
+    "git-widget-placeholder": "develop"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Asus\Projects\ETL-pipeline" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -58,6 +83,15 @@
       <option name="presentableId" value="Default" />
       <updated>1763735769999</updated>
     </task>
+    <task id="LOCAL-00001" summary="Add .gitignore and .idea/">
+      <option name="closed" value="true" />
+      <created>1763736776657</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1763736776657</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -71,7 +105,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="develop" />
                       </list>
                     </value>
                   </entry>
@@ -82,5 +116,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add .gitignore and .idea/" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add .gitignore and .idea/" />
   </component>
 </project>
