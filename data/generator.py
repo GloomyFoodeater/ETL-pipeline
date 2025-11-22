@@ -1,179 +1,157 @@
 import os
-from datetime import datetime
 
 from faker import Faker
 import pandas as pd
 import random
+from random import random, choice, uniform, randint
+from sqlalchemy import create_engine
 
 fake = Faker()
 
-# -----------------------------
-# Customers (с невалидными email'ами)
-# -----------------------------
-def generate_customers(n=500):
+
+def generate_customers(n=500, dup_rate=0.05, invalid_email_rate=0.03):
+    """Generate customers with duplicates and invalid emails in pascal case."""
+    unique_n = int((1 - dup_rate) * n)
+
     customers = []
-    for i in range(1, n+1):
+    for i in range(1, unique_n + 1):
         email = fake.email()
-        # ~3% невалидных email'ов
-        if random.random() < 0.03:
+        # Make email invalid
+        if random() < invalid_email_rate:
             email = "invalid_email_" + str(i)
         customers.append({
-            "customer_id": i,
-            "name": fake.name(),
-            "email": email,
-            "country": fake.country(),
-            "registration_date": fake.date_between(start_date="-2y", end_date="today")
+            "CustomerId": i,
+            "CustomerName": fake.name(),
+            "CustomerEmail": email,
+            "CustomerCountry": fake.country(),
+            "CustomerRegistrationDate": fake.date_between(start_date="-2y", end_date="today")
         })
 
-    # Добавляем дубликаты (5%)
-    for i in range(int(n * 0.05)):
-        customers.append(customers[random.randint(0, n-1)])
+    # Add duplicates
+    for i in range(unique_n + 1, n + 1):
+        customers.append(customers[randint(0, unique_n)])
 
     return pd.DataFrame(customers)
 
 
-# -----------------------------
-# Products (с отсутствующими ценами)
-# -----------------------------
-def generate_products(n=200):
-    categories = ["Shoes", "Electronics", "Books", "Clothing", "Home"]
+def generate_products(currencies, categories, n=200, priceless_rate=0.05, category_error_rate=0.03):
+    """Generate products with priceless instances and category errors in camel case."""
+
     products = []
-    for i in range(1, n+1):
-        # ~5% продуктов без цены
-        if random.random() < 0.05:
+    for i in range(1, n + 1):
+
+        # Remove price
+        if random() < priceless_rate:
             price = None
         else:
-            price = round(random.uniform(5, 500), 2)
+            price = round(uniform(5, 500), 2)
+
+        # Lowercase category
+        category = choice(categories)
+        if random() < category_error_rate:
+            category = category.lower()
 
         products.append({
-            "product_id": i,
-            "name": fake.word().title(),
-            "category": random.choice(categories),
-            "brand": fake.company(),
-            "price": price,
-            "currency": "USD"
+            "productId": i,
+            "productName": fake.word().title(),
+            "productCategory": category,
+            "productBrand": fake.company(),
+            "productPrice": price,
+            "productCurrency": choice(currencies)
         })
     return pd.DataFrame(products)
 
 
-# -----------------------------
-# Orders + Order Items (с пустыми заказами)
-# -----------------------------
-def generate_orders(customers, products, n=2000):
+def generate_orders(customers, products, currencies, n=2000, empty_orders=0.02, wild_pointer_rate=0.02):
+    """Generate orders and order items with empty orders and wild pointers to customers."""
+    customer_ids = customers["CustomerId"].tolist()
+
     orders = []
     order_items = []
-    for i in range(1, n+1):
-        cust_id = random.choice(customers["customer_id"].tolist())
+    for i in range(1, n + 1):
+        # Generate wild pointers to customers
+        customer_id = (max(customer_ids) + 1) if random() < wild_pointer_rate else choice(customer_ids)
         order_date = fake.date_between(start_date="-1y", end_date="today")
-        status = random.choice(["Completed", "Cancelled", "Returned"])
-        order_total = 0
+        status = choice(["Completed", "Cancelled", "Returned"])
         order_id = i
 
-        # Заказ без позиций (2%)
-        if random.random() < 0.02:
-            orders.append({
-                "order_id": order_id,
-                "customer_id": cust_id,
-                "order_date": order_date,
-                "status": status,
-                "total_amount": 0,
-                "currency": "USD"
-            })
-            continue
+        # Generate non-empty orders
+        if random() >= empty_orders:
+            for j in range(randint(1, 5)):
+                product = products.sample(1).iloc[0]
+                qty = randint(1, 3)
+                unit_price = product["productPrice"] or 0
 
-        for j in range(random.randint(1, 5)):
-            product = products.sample(1).iloc[0]
-            qty = random.randint(1, 3)
-            unit_price = product["price"] if product["price"] else 0
-            order_total += qty * unit_price
-
-            order_items.append({
-                "order_item_id": f"{i}-{j}",
-                "order_id": order_id,
-                "product_id": product["product_id"],
-                "quantity": qty,
-                "unit_price": unit_price
-            })
+                order_items.append({
+                    "OrderItemId": j,
+                    "OrderId": order_id,
+                    "ProductId": product["productId"],
+                    "OrderItemQuantity": qty,
+                    "OrderItemUnitPrice": unit_price
+                })
 
         orders.append({
-            "order_id": order_id,
-            "customer_id": cust_id,
-            "order_date": order_date,
-            "status": status,
-            "total_amount": round(order_total, 2),
-            "currency": "USD"
+            "OrderId": order_id,
+            "CustomerId": customer_id,
+            "OrderDate": order_date,
+            "OrderStatus": status,
+            "OrderCurrency": choice(currencies)
         })
 
     return pd.DataFrame(orders), pd.DataFrame(order_items)
 
 
-# -----------------------------
-# Transactions (camelCase + отрицательные суммы)
-# -----------------------------
-def generate_transactions(orders):
+def generate_transactions(orders, order_items, payment_methods, order_rate=0.1, invalid_amount=0.01):
+    """Generate transactions by orders with unfinished orders and invalid amounts in prefixless camel case."""
     transactions = []
+
     for _, order in orders.iterrows():
-        if order["status"] == "Completed":
-            amount = order["total_amount"]
-            # Отрицательные суммы (1%)
-            if random.random() < 0.01:
+        # Can be unfinished order
+        if random() < order_rate:
+            items = order_items[order_items["OrderId"] == order["OrderId"]]
+            amount = (items["OrderItemQuantity"] * items["OrderItemUnitPrice"]).sum()
+
+            # Generate invalid amount
+            if random() < invalid_amount:
                 amount = -abs(amount)
 
             transactions.append({
-                "transactionId": f"T{order['order_id']}",
-                "orderId": order["order_id"],
-                "paymentMethod": random.choice(["Card", "PayPal", "BankTransfer"]),
-                "paymentDate": order["order_date"],
+                "id": f"T{order['OrderId']}",
+                "orderId": order["OrderId"],
+                "paymentMethod": choice(payment_methods),
+                "paymentDate": order["OrderDate"],
                 "amount": amount,
-                "currency": order["currency"]
+                "currency": order["OrderCurrency"]
             })
     return pd.DataFrame(transactions)
 
 
-# -----------------------------
-# Reviews (с некорректными датами)
-# -----------------------------
-def generate_reviews(orders, products, n=1000):
-    reviews = []
-    for i in range(1, n+1):
-        order = orders.sample(1).iloc[0]
-        product = products.sample(1).iloc[0]
-        # Некорректные даты (2%)
-        if random.random() < 0.02:
-            review_date = "32-13-2025"
-        else:
-            review_date = fake.date_between(start_date=order["order_date"], end_date="today")
-
-        reviews.append({
-            "review_id": i,
-            "order_id": order["order_id"],
-            "product_id": product["product_id"],
-            "customer_id": order["customer_id"],
-            "rating": random.randint(1, 5),
-            "comment": fake.sentence(),
-            "review_date": review_date
-        })
-    return pd.DataFrame(reviews)
-
-
-# -----------------------------
-# Main
-# -----------------------------
 if __name__ == "__main__":
+    currencies = ['USD', 'EUR', 'BYN']
+    categories = ["Shoes", "Electronics", "Books", "Clothing", "Home"]
+    payment_methods = ["Card", "PayPal", "BankTransfer"]
+
+    print('Generating customers...')
     customers = generate_customers()
-    products = generate_products()
-    orders, order_items = generate_orders(customers, products)
-    transactions = generate_transactions(orders)
-    reviews = generate_reviews(orders, products)
+    print('Generating products...')
+    products = generate_products(currencies, categories)
+    print('Generating orders...')
+    orders, order_items = generate_orders(customers, products, currencies)
+    print('Generating transactions...')
+    transactions = generate_transactions(orders, order_items, payment_methods)
 
-    folder = "generated_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    folder = "generated"
     os.makedirs(folder, exist_ok=True)
+    print('Connecting to database...')
+    engine = create_engine('mysql://root:admin@127.0.0.1:3306/ecommerce_sample')
 
-    customers.to_csv(f"./{folder}/customers.csv", index=False)
-    products.to_csv(f"./{folder}/products.csv", index=False)
-    orders.to_csv(f"./{folder}/orders.csv", index=False)
-    order_items.to_csv(f"./{folder}/order_items.csv", index=False)
+    print('Writing customers...')
+    customers.to_sql('customers', engine, if_exists='replace', index=False)
+    print('Writing products...')
+    products.to_json(f"./{folder}/products.json", orient="records", indent=2, index=False)
+    print('Writing orders...')
+    orders.to_sql('orders', engine, if_exists='replace', index=False)
+    order_items.to_sql('order_items', engine, if_exists='replace', index=False)
+    print('Writing transactions...')
     transactions.to_csv(f"./{folder}/transactions.csv", index=False)
-    reviews.to_csv(f"./{folder}/reviews.csv", index=False)
-
-    print("✅ Данные сгенерированы с дополнительными ошибками (дубликаты, пустые заказы, продукты без цены, невалидные email'ы, camelCase транзакции, отрицательные суммы, некорректные даты)")
+    print('Done!')
