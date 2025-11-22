@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe62fbe6-6a07-4d29-8a47-547d14e41a23" name="Changes" comment="Add .gitignore and .idea/">
-      <change afterPath="$PROJECT_DIR$/config/db_config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/mappings.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/sample.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/etl/extract.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/etl/load.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/etl/pipeline.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/etl/transform.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="fe62fbe6-6a07-4d29-8a47-547d14e41a23" name="Changes" comment="Add ETL-interface">
+      <change beforePath="$PROJECT_DIR$/data/sample.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,26 +22,26 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="feature/extract" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "GloomyFoodeater"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;GloomyFoodeater&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/GloomyFoodeater/ETL-pipeline.git",
-    "accountId": "a24f83e4-2519-48c9-9263-2a7907f58e08"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/GloomyFoodeater/ETL-pipeline.git&quot;,
+    &quot;accountId&quot;: &quot;a24f83e4-2519-48c9-9263-2a7907f58e08&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="35nB3bdc0noAyKhtiij7BhUDVel" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -56,7 +49,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.extract.executor": "Run",
+    "Python.load.executor": "Run",
     "Python.main.executor": "Run",
+    "Python.pipeline.executor": "Run",
+    "Python.transform.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -91,7 +88,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763736776657</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add ETL-interface">
+      <option name="closed" value="true" />
+      <created>1763820081980</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763820081980</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -119,6 +124,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add .gitignore and .idea/" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add .gitignore and .idea/" />
+    <MESSAGE value="Add ETL-interface" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add ETL-interface" />
   </component>
 </project>
