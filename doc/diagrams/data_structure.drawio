@@ -1,0 +1,115 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3" pages="2">
+  <diagram name="Data Sources" id="sn7nLMwZzrQ8OEUaWdnP">
+    <mxGraphModel dx="983" dy="580" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="gYtbJlG9nb6GaXOrPvAW-1" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;Product&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;AK&lt;/td&gt;&lt;td&gt;sku&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;name&lt;br&gt;category&lt;br&gt;price&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontFamily=Courier New;fontSize=12;strokeColor=none;labelBorderColor=default;" parent="1" vertex="1">
+          <mxGeometry x="10" y="40" width="180" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="qynrtxbNOucgJmdhxR9K-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;" parent="1" source="qynrtxbNOucgJmdhxR9K-1" target="gYtbJlG9nb6GaXOrPvAW-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="qynrtxbNOucgJmdhxR9K-1" value="Entity from JSON API.&lt;div&gt;SKU is disabled after the first order&amp;nbsp;&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="230" y="55" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="qynrtxbNOucgJmdhxR9K-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;" parent="1" source="qynrtxbNOucgJmdhxR9K-7" target="qynrtxbNOucgJmdhxR9K-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="670" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qynrtxbNOucgJmdhxR9K-7" value="Entities from SQL database" style="shape=note;size=20;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="710" y="285" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="-rY1-tZ7dX2BpaV5LrIC-2" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="10" y="200" width="680" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="qynrtxbNOucgJmdhxR9K-3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" parent="-rY1-tZ7dX2BpaV5LrIC-2" vertex="1">
+          <mxGeometry width="680" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="1lPMtXdJAplSk6OKLBHL-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;endFill=0;startArrow=ERzeroToMany;startFill=0;dashed=1;" parent="-rY1-tZ7dX2BpaV5LrIC-2" source="gYtbJlG9nb6GaXOrPvAW-3" target="gYtbJlG9nb6GaXOrPvAW-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="25" as="sourcePoint" />
+            <mxPoint x="420" y="-109.99999999999989" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1lPMtXdJAplSk6OKLBHL-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;endFill=0;startArrow=ERoneToMany;startFill=0;dashed=1;" parent="-rY1-tZ7dX2BpaV5LrIC-2" source="gYtbJlG9nb6GaXOrPvAW-2" target="gYtbJlG9nb6GaXOrPvAW-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="70" as="sourcePoint" />
+            <mxPoint x="430" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gYtbJlG9nb6GaXOrPvAW-2" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;OrderItem&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;order_item_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;order_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;order_item_product_sku&lt;br&gt;order_item_quantity&lt;br&gt;order_item_unit_price&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontFamily=Courier New;fontSize=12;strokeColor=none;labelBorderColor=default;" parent="-rY1-tZ7dX2BpaV5LrIC-2" vertex="1">
+          <mxGeometry x="480" y="58.44" width="190" height="113.12" as="geometry" />
+        </mxCell>
+        <mxCell id="gYtbJlG9nb6GaXOrPvAW-3" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;Order&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;order_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;customer_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;order_status&lt;br&gt;order_date&lt;br&gt;order_payment_date&lt;br&gt;order_shipping_date&lt;br&gt;order_delivery_date&lt;br&gt;order_cancel_date&lt;br&gt;order_return_date&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontFamily=Courier New;fontSize=12;strokeColor=none;labelBorderColor=default;" parent="-rY1-tZ7dX2BpaV5LrIC-2" vertex="1">
+          <mxGeometry x="270" y="30" width="170" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="gYtbJlG9nb6GaXOrPvAW-4" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;Customer&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;customer_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;AK&lt;/td&gt;&lt;td&gt;customer_email&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;customer_last_name&lt;br&gt;customer_first_name&lt;br&gt;customer_registration_date&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fontFamily=Courier New;fontSize=12;strokeColor=none;labelBorderColor=default;" parent="-rY1-tZ7dX2BpaV5LrIC-2" vertex="1">
+          <mxGeometry x="10" y="56.25" width="220" height="117.5" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dVxteC1MLGjVGzpr-KRs" name="Data Warehouse">
+    <mxGraphModel dx="1426" dy="841" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MEZtmhKod8IyDA1U4cRC-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;endFill=0;fontFamily=Courier New;fontSize=12;startArrow=ERzeroToMany;startFill=0;dashed=1;" parent="1" source="CkBbHQckn5Q5Fde9NH4h-1" target="M1zinJnGWlvjTKbkI6J9-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="51.239999999999995" y="360" as="sourcePoint" />
+            <mxPoint x="182.2658620689656" y="267.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bSy2t9aGDseR8-ERKUgX-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;endFill=0;fontFamily=Courier New;fontSize=12;dashed=1;startArrow=ERzeroToMany;startFill=0;" parent="1" source="CkBbHQckn5Q5Fde9NH4h-1" target="M1zinJnGWlvjTKbkI6J9-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="141.24" y="410" as="sourcePoint" />
+            <mxPoint x="182.2658620689656" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEZtmhKod8IyDA1U4cRC-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;endFill=0;fontFamily=Courier New;fontSize=12;startArrow=ERoneToMany;startFill=0;dashed=1;" parent="1" source="_FLioJh4COMMKpM1z6a--1" target="CkBbHQckn5Q5Fde9NH4h-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="411.24" y="360" as="sourcePoint" />
+            <mxPoint x="231.24" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEZtmhKod8IyDA1U4cRC-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;endFill=0;fontFamily=Courier New;fontSize=12;dashed=1;startArrow=ERzeroToMany;startFill=0;" parent="1" source="_FLioJh4COMMKpM1z6a--1" target="MEZtmhKod8IyDA1U4cRC-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="453.99" y="310" as="sourcePoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEZtmhKod8IyDA1U4cRC-10" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;dim_product&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;AUTO_INCREMENT&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;AK&lt;/td&gt;&lt;td&gt;sku&lt;/td&gt;&lt;td&gt;&lt;font&gt;VARCHAR(20)&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL UNIQUE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;category&lt;br&gt;name&lt;br&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;V&lt;/font&gt;&lt;font&gt;ARCHAR(255)&lt;br&gt;VARCHAR(255)&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;br&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;strokeColor=none;labelBorderColor=default;fontFamily=Courier New;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="420.99" y="345.87" width="286" height="95.25" as="geometry" />
+        </mxCell>
+        <mxCell id="M9yUDqecqxLs4K_d3MkL-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;endFill=0;fontFamily=Courier New;fontSize=12;dashed=1;startArrow=ERzeroToMany;startFill=0;" parent="1" source="M9yUDqecqxLs4K_d3MkL-1" target="M1zinJnGWlvjTKbkI6J9-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="182.24" y="162.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9yUDqecqxLs4K_d3MkL-1" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;customer_rfm&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;AUTO_INCREMENT&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;customer_id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;calculated_at&lt;br&gt;recency&lt;br&gt;frequency&amp;nbsp;&lt;br&gt;monetary&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;font&gt;DATETIME&lt;br&gt;INT UNSIGNED&lt;br&gt;INT UNSIGNED&lt;br&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;br&gt;NOT NULL&lt;br&gt;NOT NULL&lt;br&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;fontSize=12;shadow=0;labelBorderColor=default;strokeColor=none;fontFamily=Courier New;" parent="1" vertex="1">
+          <mxGeometry x="50.52" y="60" width="319.01" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mPVS6VBe4HPGpfr2gCLK-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;fontFamily=Courier New;fontSize=12;" parent="1" source="mPVS6VBe4HPGpfr2gCLK-1" target="MEZtmhKod8IyDA1U4cRC-10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mPVS6VBe4HPGpfr2gCLK-1" value="Different id from data source" style="shape=note;size=20;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="513.99" y="230" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="CkBbHQckn5Q5Fde9NH4h-1" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;fact_order&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;span&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK1&lt;/td&gt;&lt;td&gt;customer_id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK2&lt;br&gt;&lt;/td&gt;&lt;td&gt;created_date_id&lt;br&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;&lt;font&gt;INT &lt;/font&gt;&lt;font&gt;UNSIGNED&lt;br&gt;&lt;/font&gt;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;td&gt;total_price&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;fontSize=12;strokeColor=none;labelBorderColor=default;fontFamily=Courier New;" parent="1" vertex="1">
+          <mxGeometry x="60.06" y="620" width="299.94" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="_FLioJh4COMMKpM1z6a--1" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;fact_order_item&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK1&lt;/td&gt;&lt;td&gt;order_id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK2&lt;/td&gt;&lt;td&gt;product_id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;br&gt;&lt;/td&gt;&lt;td&gt;quantity&lt;br&gt;unit_price&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;br&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;br&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;strokeColor=none;labelBorderColor=default;fontFamily=Courier New;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="424.48" y="612.19" width="279.01" height="109.63" as="geometry" />
+        </mxCell>
+        <mxCell id="M1zinJnGWlvjTKbkI6J9-2" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;dim_customer&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;span&gt;&lt;font&gt;NOT NULL&lt;/font&gt;&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;AK&lt;/td&gt;&lt;td&gt;email&lt;br&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;VARCHAR(255)&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL UNIQUE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;last_name&lt;br&gt;first_name&lt;br&gt;registration_date&lt;/td&gt;&lt;td&gt;&lt;font&gt;VARCHAR(255)&lt;br&gt;VARCHAR(255)&lt;br&gt;DATETIME&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;br&gt;NOT NULL&lt;br&gt;NOT NULL&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;fontSize=12;labelBorderColor=default;strokeColor=none;fontFamily=Courier New;" parent="1" vertex="1">
+          <mxGeometry x="33.959999999999994" y="339" width="352.13" height="109" as="geometry" />
+        </mxCell>
+        <mxCell id="M1zinJnGWlvjTKbkI6J9-3" value="&lt;div style=&quot;box-sizing:border-box;width:100%;color:#FFF;background:#5B5B5B;padding:2px;&quot;&gt;dim_date&lt;/div&gt;&lt;table style=&quot;width: 100%;&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;td&gt;&lt;font&gt;INT UNSIGNED&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;AUTO_INCREMENT&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;AK&lt;/td&gt;&lt;td&gt;full_date&lt;/td&gt;&lt;td&gt;&lt;font&gt;DATETIME&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL UNIQUE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;year&lt;br&gt;quarter&lt;br&gt;month&lt;br&gt;month_name&lt;br&gt;day&lt;br&gt;day_of_week&lt;br&gt;day_name&lt;br&gt;week_of_year&lt;br&gt;is_weekend&lt;br&gt;season&lt;br&gt;is_holiday&lt;br&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;SMALLINT UNSIGNED&lt;br&gt;TINYINT UNSIGNED&lt;br&gt;TINYINT UNSIGNED&lt;br&gt;VARCHAR(15)&lt;br&gt;TINYINT UNSIGNED&lt;br&gt;TINYINT UNSIGNED&lt;br&gt;VARCHAR(15)&lt;br&gt;TINYINT UNSIGNED&lt;br&gt;BOOLEAN&lt;br&gt;VARCHAR(15)&lt;br&gt;BOOLEAN&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font&gt;NOT NULL&lt;br&gt;&lt;/font&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;NOT NULL&lt;br&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;font&gt;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;strokeColor=none;labelBorderColor=default;fontFamily=Courier New;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="23.03" y="830" width="374" height="220" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
