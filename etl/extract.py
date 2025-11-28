@@ -9,21 +9,18 @@ def extract() -> dict[str, pd.DataFrame]:
     print_centered('Connecting to database...')
     engine = create_engine('mysql://root:admin@127.0.0.1:3306/ecommerce_sample')
 
-    print('Extracting customers...')
+    print_centered('Extracting customers...')
     customers = pd.read_sql('customers', engine)
-    print('Extracting products...')
+    print_centered('Extracting products...')
     products = pd.read_json(f"{folder}/products.json")
-    print('Extracting orders...')
+    print_centered('Extracting orders...')
     orders = pd.read_sql('orders', engine)
     order_items = pd.read_sql('order_items', engine)
-    print('Extracting transactions...')
-    transactions = pd.read_csv(f"{folder}/transactions.csv")
-    print('Done!')
+    print_centered('Done!')
 
     return {
-        'customers': customers,
-        'products': products,
-        'orders': orders,
-        'order_items': order_items,
-        'transactions': transactions
+        'dim_customer': customers,
+        'dim_product': products,
+        'fact_order': orders,
+        'fact_order_item': order_items
     }
