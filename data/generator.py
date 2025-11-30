@@ -12,7 +12,7 @@ fake = Faker()
 
 def generate_customers(n=500):
     data = []
-    for i in range(1, n):
+    for i in range(1, n + 1):
         data.append({
             'customer_id': i,
             'customer_email': fake.email(),
@@ -50,7 +50,7 @@ def generate_orders(customers, products, n=2000):
         for j in range(fake.pyint(1, 5)):
             product = products.sample(1).iloc[0]
             order_items_data.append({
-                'order_item_id': j,
+                'order_item_id': len(order_items_data) + 1,
                 'order_id': i,
                 'order_item_product_sku': product['sku'],
                 'order_item_quantity': fake.pyint(1, 3),
