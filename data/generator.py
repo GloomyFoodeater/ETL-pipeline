@@ -18,7 +18,7 @@ def generate_customers(n=500):
             'customer_email': fake.email(),
             'customer_last_name': fake.last_name(),
             'customer_first_name': fake.first_name(),
-            'customer_registration_date': fake.date_between(start_date='-2y', end_date='today')
+            'customer_registration_date': fake.date_between(start_date='-3y', end_date='today')
         })
 
     return pd.DataFrame(data)
@@ -67,7 +67,7 @@ def generate_orders(customers, products, n=2000):
         ]
 
         dates: list[datetime | None] = [None for _ in range(len(statuses))]
-        dates[0] = fake.date_time_between(start_date='-1y')
+        dates[0] = fake.date_time_between(start_date='-3y')
         for s_idx in range(statuses.index(status)):
             dates[s_idx + 1] = dates[s_idx] + dt[s_idx]
 

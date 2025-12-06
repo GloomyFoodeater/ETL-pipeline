@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Fix generator according to data structure and remove noises">
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Fix order_item_id values and customer count in generator">
+      <change afterPath="$PROJECT_DIR$/.streamlit/secrets.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/mappings.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/mappings.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etl/extract.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/extract.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etl/load.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/load.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etl/pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/pipeline.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etl/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/transform.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,6 +56,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.dashboard.executor": "Debug",
     "Python.extract.executor": "Run",
     "Python.generator.executor": "Run",
     "Python.load.executor": "Run",
@@ -62,11 +66,13 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "develop"
+    "git-widget-placeholder": "develop",
+    "ignore.virus.scanning.warn.message": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Asus\Projects\ETL-pipeline\.streamlit" />
       <recent name="D:\Asus\Projects\ETL-pipeline" />
     </key>
   </component>
@@ -79,7 +85,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="fe62fbe6-6a07-4d29-8a47-547d14e41a23" name="Changes" comment="" />
+      <changelist id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Fix extract module (remove transactions, rename keys of dictionary output)" />
       <created>1763735769999</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -109,7 +115,47 @@
       <option name="project" value="LOCAL" />
       <updated>1764290022865</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fix generator according to data structure and remove noises">
+      <option name="closed" value="true" />
+      <created>1764290225212</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764290225212</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix extract module (remove transactions, rename keys of dictionary output)">
+      <option name="closed" value="true" />
+      <created>1764290310401</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764290310401</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fix extract module (remove transactions, rename keys of dictionary output)">
+      <option name="closed" value="true" />
+      <created>1764290420043</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764290420043</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fix order_item_id generation">
+      <option name="closed" value="true" />
+      <created>1764503351369</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1764503351369</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix order_item_id values and customer count in generator">
+      <option name="closed" value="true" />
+      <created>1764511184868</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1764511184868</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -139,6 +185,9 @@
     <MESSAGE value="Add .gitignore and .idea/" />
     <MESSAGE value="Add ETL-interface" />
     <MESSAGE value="Fix generator according to data structure and remove noises" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix generator according to data structure and remove noises" />
+    <MESSAGE value="Fix extract module (remove transactions, rename keys of dictionary output)" />
+    <MESSAGE value="Fix order_item_id generation" />
+    <MESSAGE value="Fix order_item_id values and customer count in generator" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix order_item_id values and customer count in generator" />
   </component>
 </project>
