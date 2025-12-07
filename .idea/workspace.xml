@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Fix order_item_id values and customer count in generator">
-      <change afterPath="$PROJECT_DIR$/.streamlit/secrets.toml" afterDir="false" />
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Implement transform, load, pipeline and dashboard">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/mappings.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/mappings.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analytics/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/dashboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etl/load.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/load.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etl/pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etl/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/transform.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,22 +49,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.dashboard.executor": "Debug",
-    "Python.extract.executor": "Run",
-    "Python.generator.executor": "Run",
-    "Python.load.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.pipeline.executor": "Run",
-    "Python.transform.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "develop",
-    "ignore.virus.scanning.warn.message": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.dashboard.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.extract.executor&quot;: &quot;Run&quot;,
+    &quot;Python.generator.executor&quot;: &quot;Run&quot;,
+    &quot;Python.load.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pipeline.executor&quot;: &quot;Run&quot;,
+    &quot;Python.transform.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Asus\Projects\ETL-pipeline\.streamlit" />
@@ -155,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764511184868</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Implement transform, load, pipeline and dashboard">
+      <option name="closed" value="true" />
+      <created>1765037055427</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1765037055427</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -188,6 +191,7 @@
     <MESSAGE value="Fix extract module (remove transactions, rename keys of dictionary output)" />
     <MESSAGE value="Fix order_item_id generation" />
     <MESSAGE value="Fix order_item_id values and customer count in generator" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix order_item_id values and customer count in generator" />
+    <MESSAGE value="Implement transform, load, pipeline and dashboard" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement transform, load, pipeline and dashboard" />
   </component>
 </project>

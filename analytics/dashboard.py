@@ -45,7 +45,7 @@ def write_turnover_and_sales():
                 y=alt.Y('turnover:Q', title='Turnover')
             )
 
-            st.altair_chart(chart, use_container_width=True)
+            st.altair_chart(chart)
         with sales_col:
             script = f'''
                 SELECT COUNT(fo.id) sales_count
@@ -75,7 +75,7 @@ def write_turnover_and_sales():
                 y=alt.Y('sales_count:Q', title='Sales count')
             )
 
-            st.altair_chart(chart, use_container_width=True)
+            st.altair_chart(chart)
     else:
         st.error('❌ Start date must be before or equal to end date')
 
@@ -112,12 +112,11 @@ def write_top_products():
         'sales_count': st.column_config.NumberColumn('Sales count'),
         'turnover': st.column_config.NumberColumn('Turnover', format='%s BYN'),
     }
-    st.dataframe(top_products, column_config=config)
+    st.dataframe(top_products, column_config=config, hide_index=True)
 
 
 def write_rfm_metrics():
     st.header('RFM metrics')
-    # segments = list(rfm['segment'].unique())
     segments = [
         None,
         'Champions',
@@ -133,9 +132,8 @@ def write_rfm_metrics():
         'Lost Customers',
         'Others'
     ]
-    segment = st.selectbox('Select segment', segments)
 
-    script = f'''
+    script = '''
     WITH rfm_scores AS (
             SELECT
                 customer_id,
@@ -146,60 +144,70 @@ def write_rfm_metrics():
                 NTILE(5) OVER (ORDER BY frequency DESC) AS f_score,
                 NTILE(5) OVER (ORDER BY monetary DESC) AS m_score
     FROM customer_rfm)
-    SELECT  t.* 
-    FROM    (SELECT
-                CONCAT(first_name, ' ', last_name) name,
-                recency,
-                frequency,
-                monetary,
-                CASE
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('555','554','544','545','454','455','445') 
-                        THEN 'Champions'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('543','444','435','355','354','345','344','335') 
-                        THEN 'Loyal Customers'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('553','551','552','541','542','533','532','531',
-                                                               '452','451','442','441','431','453','433','432',
-                                                               '423','353','352','351','342','341','333','323') 
-                        THEN 'Potential Loyalists'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('512','511','422','421','412','411','311') 
-                        THEN 'New Customers'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('525','524','523','522','521','515','514','513',
-                                                               '425','424','413','414','415','315','314','313') 
-                        THEN 'Promising'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('535','534','443','434','343','334','325','324') 
-                        THEN 'Need Attention'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('331','321','312','221','213','231','241','251') 
-                        THEN 'About to Sleep'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('155','154','144','214','215','115','114','113') 
-                        THEN 'Cannot Lose Them'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('255','254','245','244','253','252','243','242',
-                                                               '235','234','225','224','153','152','145','143',
-                                                               '142','135','134','133','125','124') 
-                        THEN 'At Risk'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('332','322','233','232','223','222','132','123',
-                                                               '122','212','211') 
-                        THEN 'Hibernating'
-                    WHEN CONCAT(r_score, f_score, m_score) IN ('111','112','121','131','141','151') 
-                        THEN 'Lost Customers'
-                    ELSE 'Others'
-                END AS segment,
-                email
-            FROM rfm_scores
-            JOIN dim_customer ON dim_customer.id = rfm_scores.customer_id) t
-    {f"WHERE t.segment = '{segment}'" if segment else ''}
-    ;
+    SELECT
+            CASE
+                WHEN CONCAT(r_score, f_score, m_score) IN ('555','554','544','545','454','455','445') 
+                    THEN 'Champions'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('543','444','435','355','354','345','344','335') 
+                    THEN 'Loyal Customers'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('553','551','552','541','542','533','532','531',
+                                                           '452','451','442','441','431','453','433','432',
+                                                           '423','353','352','351','342','341','333','323') 
+                    THEN 'Potential Loyalists'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('512','511','422','421','412','411','311') 
+                    THEN 'New Customers'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('525','524','523','522','521','515','514','513',
+                                                           '425','424','413','414','415','315','314','313') 
+                    THEN 'Promising'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('535','534','443','434','343','334','325','324') 
+                    THEN 'Need Attention'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('331','321','312','221','213','231','241','251') 
+                    THEN 'About to Sleep'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('155','154','144','214','215','115','114','113') 
+                    THEN 'Cannot Lose Them'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('255','254','245','244','253','252','243','242',
+                                                           '235','234','225','224','153','152','145','143',
+                                                           '142','135','134','133','125','124') 
+                    THEN 'At Risk'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('332','322','233','232','223','222','132','123',
+                                                           '122','212','211') 
+                    THEN 'Hibernating'
+                WHEN CONCAT(r_score, f_score, m_score) IN ('111','112','121','131','141','151') 
+                    THEN 'Lost Customers'
+                ELSE 'Others'
+            END AS segment,
+            CONCAT(first_name, ' ', last_name) name,
+            email,
+            recency,
+            frequency,
+            monetary
+        FROM rfm_scores
+        JOIN dim_customer ON dim_customer.id = rfm_scores.customer_id;
     '''
     rfm = conn.query(script)
+    segment_counts = (rfm['segment']
+                      .value_counts()
+                      .reindex(segments[1:], fill_value=0)
+                      .reset_index())
 
     config = {
         'name': st.column_config.TextColumn('Name'),
-        'recency': st.column_config.NumberColumn('Recency', format='%s days'),
-        'frequency': st.column_config.NumberColumn('Frequency', format='%s Orders'),
-        'monetary': st.column_config.NumberColumn('Monetary', format='%s BYN'),
+        'recency': st.column_config.NumberColumn('R', format='%s days'),
+        'frequency': st.column_config.NumberColumn('F', format='%s Orders'),
+        'monetary': st.column_config.NumberColumn('M', format='%s BYN'),
         'segment': st.column_config.TextColumn('Segment')
     }
 
-    st.dataframe(rfm, column_config=config)
+    segment = st.selectbox('Select segment', segments)
+    if segment:
+        rfm = rfm[rfm['segment'] == segment]
+    st.dataframe(rfm, column_config=config, hide_index=True)
+
+    chart = alt.Chart(segment_counts).mark_arc().encode(
+        theta=alt.Theta('count:Q', title='Counter'),
+        color=alt.Color('segment:N', title='Segment', scale=alt.Scale(scheme='category20'))
+    ).properties(title='Segment distribution')
+    st.altair_chart(chart)
 
 
 def write_divider():
