@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Implement transform, load, pipeline and dashboard">
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Add pie chart for customer segments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analytics/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/dashboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
@@ -158,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765037055427</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Add pie chart for customer segments">
+      <option name="closed" value="true" />
+      <created>1765098530297</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1765098530297</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -192,6 +200,7 @@
     <MESSAGE value="Fix order_item_id generation" />
     <MESSAGE value="Fix order_item_id values and customer count in generator" />
     <MESSAGE value="Implement transform, load, pipeline and dashboard" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement transform, load, pipeline and dashboard" />
+    <MESSAGE value="Add pie chart for customer segments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add pie chart for customer segments" />
   </component>
 </project>

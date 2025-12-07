@@ -14,70 +14,56 @@ def write_turnover_and_sales():
     start_date = left.date_input('Start date', date(today.year - 1, today.month, today.day))
     end_date = right.date_input('End date', today)
 
-    turnover_col, sales_col = st.columns(2)
-    if start_date < end_date:
-        with turnover_col:
-            script = f'''
-                SELECT SUM(fo.total_price) turnover
-                FROM fact_order fo
-                JOIN dim_date dt ON fo.created_at = dt.id
-                WHERE dt.full_date BETWEEN '{start_date}' AND '{end_date}'
-            '''
-            turnover = conn.query(script)['turnover'].iloc[0] or 0
-            st.text(f'Turnover: {turnover}')
-
-            script = f'''
-            SELECT 
-                dt.year,
-                dt.month,
-                SUM(fo.total_price) AS turnover
-            FROM fact_order fo
-            JOIN dim_date dt ON fo.created_at = dt.id
-            WHERE dt.full_date BETWEEN '{start_date}' AND '{end_date}'
-            GROUP BY dt.year, dt.month
-            ORDER BY dt.year, dt.month;
-            '''
-            turnover_by_months = conn.query(script)
-            turnover_by_months['year_month'] = pd.to_datetime(turnover_by_months[['year', 'month']].assign(day=1))
-
-            chart = alt.Chart(turnover_by_months).mark_bar(size=10).encode(
-                x=alt.X('year_month:T', axis=alt.Axis(format='%b %Y', title='Month', labelAngle=-90)),
-                y=alt.Y('turnover:Q', title='Turnover')
-            )
-
-            st.altair_chart(chart)
-        with sales_col:
-            script = f'''
-                SELECT COUNT(fo.id) sales_count
-                FROM fact_order fo
-                JOIN dim_date dt ON fo.created_at = dt.id
-                WHERE dt.full_date BETWEEN '{start_date}' AND '{end_date}'
-            '''
-            sales_count = conn.query(script)['sales_count'].iloc[0]
-            st.text(f'Sales count: {sales_count}')
-
-            script = f'''
-            SELECT 
-                dt.year,
-                dt.month,
-                COUNT(fo.id) AS sales_count
-            FROM fact_order fo
-            JOIN dim_date dt ON fo.created_at = dt.id
-            WHERE dt.full_date BETWEEN '{start_date}' AND '{end_date}'
-            GROUP BY dt.year, dt.month
-            ORDER BY dt.year, dt.month;
-            '''
-            orders_by_months = conn.query(script)
-            orders_by_months['year_month'] = pd.to_datetime(turnover_by_months[['year', 'month']].assign(day=1))
-
-            chart = alt.Chart(orders_by_months).mark_bar(size=10).encode(
-                x=alt.X('year_month:T', axis=alt.Axis(format='%b %Y', title='Month', labelAngle=-90)),
-                y=alt.Y('sales_count:Q', title='Sales count')
-            )
-
-            st.altair_chart(chart)
-    else:
+    if start_date >= end_date:
         st.error('❌ Start date must be before or equal to end date')
+        return
+
+    query_params = {'start_date':start_date, 'end_date':end_date}
+    sql_query = '''
+        SELECT SUM(fo.total_price) turnover, COUNT(fo.id) sales_count
+        FROM fact_order fo
+        JOIN dim_date dt ON fo.created_at = dt.id
+        WHERE dt.full_date BETWEEN :start_date AND :end_date
+    '''
+    turnover, sales_count = conn.query(sql_query, params=query_params).loc[0, ['turnover', 'sales_count']]
+
+    sql_query = '''
+    SELECT 
+        dt.year,
+        dt.month,
+        SUM(fo.total_price) AS turnover,
+        COUNT(fo.id) AS sales_count
+    FROM fact_order fo
+    JOIN dim_date dt ON fo.created_at = dt.id
+    WHERE dt.full_date BETWEEN :start_date AND :end_date
+    GROUP BY dt.year, dt.month
+    ORDER BY dt.year, dt.month;
+    '''
+    df = conn.query(sql_query, params=query_params)
+
+    all_dates = pd.date_range(start=start_date, end=end_date, freq='MS')
+
+    calendar = pd.DataFrame({
+        'year': all_dates.year,
+        'month': all_dates.month,
+        'period': all_dates.strftime('%b %Y')
+    })
+
+    df = calendar.merge(df, on=['year', 'month'], how='left')
+
+    turnover_col, sales_col = st.columns(2)
+    chart = alt.Chart(df).mark_bar().encode(
+        x=alt.X('period', title='Month', sort=all_dates),
+        y=alt.Y('turnover', title='Turnover')
+    ).properties(title='Turnover by months')
+    turnover_col.text(f'Turnover: {turnover}')
+    turnover_col.altair_chart(chart)
+    chart = alt.Chart(df).mark_bar().encode(
+        x=alt.X('period', title='Month', sort=all_dates),
+        y=alt.Y('sales_count', title='Sales')
+    ).properties(title='Sales by months')
+    sales_col.text(f'Sales count: {sales_count}')
+    sales_col.altair_chart(chart)
 
 
 def write_top_products():
@@ -94,7 +80,7 @@ def write_top_products():
         sort_by = 'sales_count'
     order_by = right.selectbox('Order by', ['DESC', 'ASC'])
 
-    script = f'''
+    sql_query = f'''
     SELECT p.name, p.sku, p.category, t.turnover, t.sales_count FROM
     	(SELECT oi.product_id, SUM(oi.quantity * oi.unit_price) turnover, SUM(oi.quantity) sales_count
     	FROM fact_order_item oi
@@ -104,7 +90,7 @@ def write_top_products():
     ORDER BY t.{sort_by} {order_by}
     {f"LIMIT {limit}" if limit else ''}
     '''
-    top_products = conn.query(script)
+    top_products = conn.query(sql_query)
 
     config = {
         'name': st.column_config.TextColumn('Product'),
@@ -133,7 +119,7 @@ def write_rfm_metrics():
         'Others'
     ]
 
-    script = '''
+    sql_query = '''
     WITH rfm_scores AS (
             SELECT
                 customer_id,
@@ -184,7 +170,7 @@ def write_rfm_metrics():
         FROM rfm_scores
         JOIN dim_customer ON dim_customer.id = rfm_scores.customer_id;
     '''
-    rfm = conn.query(script)
+    rfm = conn.query(sql_query)
     segment_counts = (rfm['segment']
                       .value_counts()
                       .reindex(segments[1:], fill_value=0)
