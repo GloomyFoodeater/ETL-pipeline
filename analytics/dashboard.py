@@ -4,6 +4,8 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 
+from paginator import Paginator
+
 conn = st.connection('data_warehouse', type='sql')
 
 
@@ -72,7 +74,6 @@ def write_top_products():
     st.header('Top products')
 
     categories = [None, 'Backpack', 'Wallet', 'Handbag', 'Shopper', 'Belt bag', 'Trinket']
-    limit = st.number_input('Top products limit', min_value=0)
     category = st.selectbox('Choose a category', categories)
     left, right = st.columns(2)
     sort_by = left.selectbox('Sort by', ['Turnover', 'Sales count'])
@@ -90,9 +91,10 @@ def write_top_products():
     RIGHT JOIN dim_product p ON p.id = t.product_id
     {f"WHERE p.category = '{category}'" if category else ''}
     ORDER BY t.{sort_by} {order_by}
-    {f"LIMIT {limit}" if limit else ''}
     '''
     top_products = conn.query(sql_query)
+
+    product_paginator = Paginator(top_products, 'product')
 
     config = {
         'name': st.column_config.TextColumn('Product'),
@@ -100,7 +102,9 @@ def write_top_products():
         'sales_count': st.column_config.NumberColumn('Sales count'),
         'turnover': st.column_config.NumberColumn('Turnover', format='%s BYN'),
     }
-    st.dataframe(top_products, column_config=config, hide_index=True)
+    st.dataframe(product_paginator.get_page(), column_config=config, hide_index=True)
+
+    product_paginator.write()
 
 
 def write_rfm_metrics():
@@ -172,11 +176,14 @@ def write_rfm_metrics():
         FROM rfm_scores
         RIGHT JOIN dim_customer ON dim_customer.id = rfm_scores.customer_id;
     '''
-    rfm = conn.query(sql_query)
-    segment_counts = (rfm['segment']
+    customers = conn.query(sql_query)
+    segment_counts = (customers['segment']
                       .value_counts()
                       .reindex(segments[1:], fill_value=0)
                       .reset_index())
+    segment = st.selectbox('Select segment', segments)
+    if segment:
+        customers = customers[customers['segment'] == segment]
 
     config = {
         'name': st.column_config.TextColumn('Name'),
@@ -186,10 +193,11 @@ def write_rfm_metrics():
         'segment': st.column_config.TextColumn('Segment')
     }
 
-    segment = st.selectbox('Select segment', segments)
-    if segment:
-        rfm = rfm[rfm['segment'] == segment]
-    st.dataframe(rfm, column_config=config, hide_index=True)
+    customer_paginator = Paginator(customers, 'customer')
+
+    st.dataframe(customer_paginator.get_page(), column_config=config, hide_index=True)
+
+    customer_paginator.write()
 
     chart = alt.Chart(segment_counts).mark_arc().encode(
         theta=alt.Theta('count:Q', title='Counter'),
