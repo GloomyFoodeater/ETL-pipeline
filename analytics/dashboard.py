@@ -18,7 +18,7 @@ def write_turnover_and_sales():
         st.error('❌ Start date must be before or equal to end date')
         return
 
-    query_params = {'start_date':start_date, 'end_date':end_date}
+    query_params = {'start_date': start_date, 'end_date': end_date}
     sql_query = '''
         SELECT SUM(fo.total_price) turnover, COUNT(fo.id) sales_count
         FROM fact_order fo
@@ -50,6 +50,8 @@ def write_turnover_and_sales():
     })
 
     df = calendar.merge(df, on=['year', 'month'], how='left')
+    df['turnover'].fillna(0, inplace=True)
+    df['sales_count'].fillna(0, inplace=True)
 
     turnover_col, sales_col = st.columns(2)
     chart = alt.Chart(df).mark_bar().encode(
@@ -81,11 +83,11 @@ def write_top_products():
     order_by = right.selectbox('Order by', ['DESC', 'ASC'])
 
     sql_query = f'''
-    SELECT p.name, p.sku, p.category, t.turnover, t.sales_count FROM
-    	(SELECT oi.product_id, SUM(oi.quantity * oi.unit_price) turnover, SUM(oi.quantity) sales_count
-    	FROM fact_order_item oi
-    	GROUP BY oi.product_id) t
-    JOIN dim_product p ON p.id = t.product_id
+    SELECT  p.name, p.sku, p.category, COALESCE(t.turnover, 0) turnover, COALESCE(t.sales_count, 0) sales_count 
+    FROM    (SELECT oi.product_id, SUM(oi.quantity * oi.unit_price) turnover, SUM(oi.quantity) sales_count
+    	    FROM fact_order_item oi
+    	    GROUP BY oi.product_id) t
+    RIGHT JOIN dim_product p ON p.id = t.product_id
     {f"WHERE p.category = '{category}'" if category else ''}
     ORDER BY t.{sort_by} {order_by}
     {f"LIMIT {limit}" if limit else ''}
@@ -165,10 +167,10 @@ def write_rfm_metrics():
             CONCAT(first_name, ' ', last_name) name,
             email,
             recency,
-            frequency,
-            monetary
+            COALESCE(frequency, 0) frequency,
+            COALESCE(monetary, 0) monetary
         FROM rfm_scores
-        JOIN dim_customer ON dim_customer.id = rfm_scores.customer_id;
+        RIGHT JOIN dim_customer ON dim_customer.id = rfm_scores.customer_id;
     '''
     rfm = conn.query(sql_query)
     segment_counts = (rfm['segment']
