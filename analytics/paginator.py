@@ -7,7 +7,7 @@ class Paginator:
         self.prefix = prefix
         self.container = container
         self.items_per_page = st.session_state.get(prefix + 'ipp', 10)
-        self.total_pages = math.ceil(len(container) / self.items_per_page)
+        self.total_pages = max(math.ceil(len(container) / self.items_per_page), 1)
         self.page_number = st.session_state.get(prefix + 'pn', 1)
         if self.page_number > self.total_pages:
             self.page_number = 1
