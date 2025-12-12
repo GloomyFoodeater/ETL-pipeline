@@ -4,10 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Add non-buyers and unsold products in tables, fix nulls in turnover/sales">
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Add paginators, remove limit for top products">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analytics/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analytics/paginator.py" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/paginator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/db_config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/mappings.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/generator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etl/extract.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/extract.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etl/load.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/load.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etl/pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etl/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/transform.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,27 +57,102 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.dashboard.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.extract.executor&quot;: &quot;Run&quot;,
-    &quot;Python.generator.executor&quot;: &quot;Run&quot;,
-    &quot;Python.load.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.pipeline.executor&quot;: &quot;Run&quot;,
-    &quot;Python.transform.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.dashboard.executor": "Debug",
+    "Python.extract.executor": "Run",
+    "Python.generator.executor": "Run",
+    "Python.load.executor": "Debug",
+    "Python.main.executor": "Run",
+    "Python.pipeline.executor": "Run",
+    "Python.streamlit.executor": "Run",
+    "Python.transform.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Shell Script.dashboard.executor": "Run",
+    "git-widget-placeholder": "develop",
+    "ignore.virus.scanning.warn.message": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Asus\Projects\ETL-pipeline\.streamlit" />
       <recent name="D:\Asus\Projects\ETL-pipeline" />
     </key>
+  </component>
+  <component name="RunManager" selected="Python.pipeline">
+    <configuration name="pipeline" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="ETL-pipeline" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="env" value="dev" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.13 (ETL-pipeline)" />
+      <option name="WORKING_DIRECTORY" value="D:\Asus\Projects\ETL-pipeline\etl" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/etl/pipeline.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="transform" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ETL-pipeline" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/etl" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/etl/transform.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="dashboard" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="false" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/.venv/Scripts/streamlit.exe" />
+      <option name="SCRIPT_OPTIONS" value="run analytics\dashboard.py" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.pipeline" />
+      <item itemvalue="Python.transform" />
+      <item itemvalue="Shell Script.dashboard" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.transform" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -182,7 +265,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765359357561</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add paginators, remove limit for top products">
+      <option name="closed" value="true" />
+      <created>1765363220711</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1765363220711</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Add paginators, remove limit for top products">
+      <option name="closed" value="true" />
+      <created>1765363242763</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1765363242763</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -219,6 +318,18 @@
     <MESSAGE value="Add pie chart for customer segments" />
     <MESSAGE value="Fix charts for turnover and sales" />
     <MESSAGE value="Add non-buyers and unsold products in tables, fix nulls in turnover/sales" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add non-buyers and unsold products in tables, fix nulls in turnover/sales" />
+    <MESSAGE value="Add paginators, remove limit for top products" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add paginators, remove limit for top products" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

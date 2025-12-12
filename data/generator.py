@@ -1,11 +1,10 @@
-import os
 from datetime import timedelta, datetime
 
+import yaml
 from faker import Faker
 import pandas as pd
 from sqlalchemy import create_engine
-
-from utils.console import print_centered
+from sqlalchemy_utils import database_exists, drop_database, create_database
 
 fake = Faker()
 
@@ -29,11 +28,11 @@ def generate_products(n=200):
     categories = ['Backpack', 'Wallet', 'Handbag', 'Shopper', 'Belt bag']
     for i in range(1, n + 1):
         data.append({
-            'id': i,
-            'sku': fake.uuid4()[:20],
-            'name': fake.word().title(),
-            'category': fake.random_element(categories),
-            'price': fake.pyint(2, 500),
+            'product_id': i,
+            'product_sku': fake.uuid4()[:20],
+            'product_name': fake.word().title(),
+            'product_category': fake.random_element(categories),
+            'product_price': fake.pyint(2, 500),
         })
     return pd.DataFrame(data)
 
@@ -52,9 +51,9 @@ def generate_orders(customers, products, n=2000):
             order_items_data.append({
                 'order_item_id': len(order_items_data) + 1,
                 'order_id': i,
-                'order_item_product_sku': product['sku'],
+                'product_id': product['product_id'],
                 'order_item_quantity': fake.pyint(1, 3),
-                'order_item_unit_price': product['price']
+                'order_item_unit_price': product['product_price']
             })
 
         status = fake.random_element(statuses)
@@ -89,23 +88,28 @@ def generate_orders(customers, products, n=2000):
 
 
 if __name__ == '__main__':
-    print_centered('Generating customers...')
+    print('Generating customers...')
     customers = generate_customers()
-    print_centered('Generating products...')
+    print('Generating products...')
     products = generate_products()
-    print_centered('Generating orders...')
+    print('Generating orders...')
     orders, order_items = generate_orders(customers, products)
 
-    folder = 'generated'
-    os.makedirs(folder, exist_ok=True)
-    print_centered('Connecting to database...')
-    engine = create_engine('mysql://root:admin@127.0.0.1:3306/ecommerce_sample')
+    with open('../config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+    print('Connecting to database...')
 
-    print_centered('Writing customers...')
+    engine = create_engine(config['sql_source_url'])
+    if database_exists(engine.url):
+        drop_database(engine.url)
+    create_database(engine.url)
+
+    print('Writing customers...')
     customers.to_sql('customers', engine, if_exists='replace', index=False)
-    print_centered('Writing products...')
-    products.to_json(f'./{folder}/products.json', orient='records', indent=2, index=False)
-    print_centered('Writing orders...')
+    print('Writing products...')
+    products.to_sql('products', engine, if_exists='replace', index=False)
+    print('Writing orders...')
     orders.to_sql('orders', engine, if_exists='replace', index=False)
     order_items.to_sql('order_items', engine, if_exists='replace', index=False)
-    print_centered('Done!')
+
+    print('Done!')

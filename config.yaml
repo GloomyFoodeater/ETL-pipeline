@@ -1,0 +1,22 @@
+sql_source_url: 'mysql://root:admin@127.0.0.1:3306/ecommerce_sample'
+data_warehouse_url: 'mysql://root:admin@localhost:3306/e_commerce_dw'
+mappings:
+  dim_customer:
+    customer_id: id
+    customer_email: email
+    customer_last_name: last_name
+    customer_first_name: first_name
+  dim_product:
+    product_id: id
+    product_sku: sku
+    product_category: category
+    product_name: name
+    product_price: price
+  fact_order:
+    order_id: id
+    order_status: status
+    order_date: created_at
+  fact_order_item:
+    order_item_id: id
+    order_item_quantity: quantity
+    order_item_unit_price: unit_price

@@ -1,3 +1,4 @@
+# TODO: Output data frames without sorting
 from datetime import date
 
 import pandas as pd
@@ -24,22 +25,18 @@ def write_turnover_and_sales():
     sql_query = '''
         SELECT SUM(fo.total_price) turnover, COUNT(fo.id) sales_count
         FROM fact_order fo
-        JOIN dim_date dt ON fo.created_at = dt.id
+        JOIN dim_date dt ON fo.created_at_id = dt.id
         WHERE dt.full_date BETWEEN :start_date AND :end_date
     '''
     turnover, sales_count = conn.query(sql_query, params=query_params).loc[0, ['turnover', 'sales_count']]
 
     sql_query = '''
-    SELECT 
-        dt.year,
-        dt.month,
-        SUM(fo.total_price) AS turnover,
-        COUNT(fo.id) AS sales_count
+    SELECT dt.year, dt.month, SUM(fo.total_price) AS turnover, COUNT(fo.id) AS sales_count
     FROM fact_order fo
-    JOIN dim_date dt ON fo.created_at = dt.id
+    JOIN dim_date dt ON fo.created_at_id = dt.id
     WHERE dt.full_date BETWEEN :start_date AND :end_date
     GROUP BY dt.year, dt.month
-    ORDER BY dt.year, dt.month;
+    ORDER BY dt.year, dt.month
     '''
     df = conn.query(sql_query, params=query_params)
 
@@ -52,8 +49,7 @@ def write_turnover_and_sales():
     })
 
     df = calendar.merge(df, on=['year', 'month'], how='left')
-    df['turnover'].fillna(0, inplace=True)
-    df['sales_count'].fillna(0, inplace=True)
+    df.fillna({'turnover': 0, 'sales_count': 0}, inplace=True)
 
     turnover_col, sales_col = st.columns(2)
     chart = alt.Chart(df).mark_bar().encode(
@@ -84,13 +80,10 @@ def write_top_products():
     order_by = right.selectbox('Order by', ['DESC', 'ASC'])
 
     sql_query = f'''
-    SELECT  p.name, p.sku, p.category, COALESCE(t.turnover, 0) turnover, COALESCE(t.sales_count, 0) sales_count 
-    FROM    (SELECT oi.product_id, SUM(oi.quantity * oi.unit_price) turnover, SUM(oi.quantity) sales_count
-    	    FROM fact_order_item oi
-    	    GROUP BY oi.product_id) t
-    RIGHT JOIN dim_product p ON p.id = t.product_id
+    SELECT  name, sku, category, price, turnover, sales_count 
+    FROM    dim_product
     {f"WHERE p.category = '{category}'" if category else ''}
-    ORDER BY t.{sort_by} {order_by}
+    ORDER BY {sort_by} {order_by}
     '''
     top_products = conn.query(sql_query)
 
@@ -99,8 +92,10 @@ def write_top_products():
     config = {
         'name': st.column_config.TextColumn('Product'),
         'sku': st.column_config.TextColumn('SKU'),
+        'category': st.column_config.TextColumn('Category'),
+        'price': st.column_config.NumberColumn('Price', format='%s USD'),
         'sales_count': st.column_config.NumberColumn('Sales count'),
-        'turnover': st.column_config.NumberColumn('Turnover', format='%s BYN'),
+        'turnover': st.column_config.NumberColumn('Turnover', format='%s USD'),
     }
     st.dataframe(product_paginator.get_page(), column_config=config, hide_index=True)
 
@@ -122,59 +117,12 @@ def write_rfm_metrics():
         'At Risk',
         'Hibernating',
         'Lost Customers',
-        'Others'
+        'Potential Customers'
     ]
 
     sql_query = '''
-    WITH rfm_scores AS (
-            SELECT
-                customer_id,
-                recency,
-                frequency,
-                monetary,
-                NTILE(5) OVER (ORDER BY recency ASC) AS r_score,
-                NTILE(5) OVER (ORDER BY frequency DESC) AS f_score,
-                NTILE(5) OVER (ORDER BY monetary DESC) AS m_score
-    FROM customer_rfm)
-    SELECT
-            CASE
-                WHEN CONCAT(r_score, f_score, m_score) IN ('555','554','544','545','454','455','445') 
-                    THEN 'Champions'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('543','444','435','355','354','345','344','335') 
-                    THEN 'Loyal Customers'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('553','551','552','541','542','533','532','531',
-                                                           '452','451','442','441','431','453','433','432',
-                                                           '423','353','352','351','342','341','333','323') 
-                    THEN 'Potential Loyalists'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('512','511','422','421','412','411','311') 
-                    THEN 'New Customers'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('525','524','523','522','521','515','514','513',
-                                                           '425','424','413','414','415','315','314','313') 
-                    THEN 'Promising'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('535','534','443','434','343','334','325','324') 
-                    THEN 'Need Attention'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('331','321','312','221','213','231','241','251') 
-                    THEN 'About to Sleep'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('155','154','144','214','215','115','114','113') 
-                    THEN 'Cannot Lose Them'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('255','254','245','244','253','252','243','242',
-                                                           '235','234','225','224','153','152','145','143',
-                                                           '142','135','134','133','125','124') 
-                    THEN 'At Risk'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('332','322','233','232','223','222','132','123',
-                                                           '122','212','211') 
-                    THEN 'Hibernating'
-                WHEN CONCAT(r_score, f_score, m_score) IN ('111','112','121','131','141','151') 
-                    THEN 'Lost Customers'
-                ELSE 'Others'
-            END AS segment,
-            CONCAT(first_name, ' ', last_name) name,
-            email,
-            recency,
-            COALESCE(frequency, 0) frequency,
-            COALESCE(monetary, 0) monetary
-        FROM rfm_scores
-        RIGHT JOIN dim_customer ON dim_customer.id = rfm_scores.customer_id;
+    SELECT  segment, CONCAT(first_name, ' ', last_name) name, email, recency, frequency, monetary
+    FROM dim_customer
     '''
     customers = conn.query(sql_query)
     segment_counts = (customers['segment']
