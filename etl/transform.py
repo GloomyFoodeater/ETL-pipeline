@@ -1,4 +1,3 @@
-# TODO: Validate data
 from datetime import datetime
 
 import pandas as pd
@@ -6,6 +5,7 @@ import yaml
 
 from etl.extract import extract
 from utils.console import print_centered
+from pandera.pandas import Column, DataFrameSchema, Check
 
 
 def map_field_names(data):
@@ -18,9 +18,58 @@ def map_field_names(data):
 
 
 def filter_data(data):
-    data['fact_order'] = data['fact_order'][data['fact_order']['status'] == 'Delivered']
+    customers = data['dim_customer']
+    customers['first_name'] = customers['first_name'].str.strip()
+    customers['last_name'] = customers["last_name"].str.strip()
+    customers['email'] = customers['email'].str.strip()
+    schema = DataFrameSchema({
+        'id': Column(int, nullable=False),
+        'email': Column(str, Check.str_matches(r'^[^@]+@[^@]+\.[^@]+$'), nullable=False),
+        'first_name': Column(str, Check.str_matches(r'^[A-Za-z]{1,50}$'), nullable=False),
+        'last_name': Column(str, Check.str_matches(r'^[A-Za-z]{1,50}$'), nullable=False)
+    }, drop_invalid_rows=True)
+    data['dim_customer'] = schema.validate(customers, lazy=True)
+
+    valid_customer_ids = data['dim_customer']['id']
+
+    products = data['dim_product']
+    products['category'] = products['category'].str.strip().str.lower()
+    products['name'] = products['name'].str.strip()
+    schema = DataFrameSchema({
+        'id': Column(int, nullable=False),
+        'sku': Column(str, Check.str_length(20, 20), nullable=False),
+        'category': Column(str, Check.str_length(1, 50), nullable=False),
+        'name': Column(str, Check.str_length(1, 50), nullable=False),
+        'price': Column(int, Check.gt(0), nullable=False)
+    }, drop_invalid_rows=True)
+    data['dim_product'] = schema.validate(products, lazy=True)
+
+    valid_product_ids = data['dim_product']['id']
+
+    orders = data['fact_order']
+    orders['status'] = orders['status'].str.strip().str.lower()
+    schema = DataFrameSchema({
+        'id': Column(int, nullable=False),
+        'status': Column(str, Check.eq('delivered'), nullable=False),
+        'customer_id': Column(int, Check.isin(valid_customer_ids), nullable=False),
+        'created_at': Column(datetime, Check.le(pd.Timestamp.now()), nullable=False)
+    }, drop_invalid_rows=True)
+    data['fact_order'] = schema.validate(orders, lazy=True)
+
     valid_order_ids = data['fact_order']['id']
-    data['fact_order_item'] = data['fact_order_item'][data['fact_order_item']['order_id'].isin(valid_order_ids)]
+
+    schema = DataFrameSchema({
+        'id': Column(int, nullable=False),
+        'order_id': Column(int, Check.isin(valid_order_ids), nullable=False),
+        'product_id': Column(int, Check.isin(valid_product_ids), nullable=False),
+        'quantity': Column(int, Check.gt(0), nullable=False),
+        'unit_price': Column(int, Check.gt(0), nullable=False)
+    }, drop_invalid_rows=True)
+    data['fact_order_item'] = schema.validate(data['fact_order_item'], lazy=True)
+
+    orders_with_items = data['fact_order_item']['order_id'].unique()
+
+    data['fact_order'] = data['fact_order'][data['fact_order']['id'].isin(orders_with_items)]
 
 
 def add_total_price(data):
@@ -185,4 +234,5 @@ if __name__ == '__main__':
         print_centered('Transformed data', ' ')
         for (k, df) in data.items():
             print_centered(k)
-            print(df.head())
+            print(f'{k}: len(df) = {len(df)}')
+            # print(df.head())
