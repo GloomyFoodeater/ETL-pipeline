@@ -1,5 +1,4 @@
 # TODO: Validate data
-# TODO: Typecast
 from datetime import datetime
 
 import pandas as pd
@@ -20,6 +19,8 @@ def map_field_names(data):
 
 def filter_data(data):
     data['fact_order'] = data['fact_order'][data['fact_order']['status'] == 'Delivered']
+    valid_order_ids = data['fact_order']['id']
+    data['fact_order_item'] = data['fact_order_item'][data['fact_order_item']['order_id'].isin(valid_order_ids)]
 
 
 def add_total_price(data):
@@ -48,11 +49,10 @@ def add_dim_date(data):
 def get_score(series, ascending=True, tiles=5):
     bins = pd.qcut(series, tiles, duplicates='drop')
     n = len(bins.cat.categories)
-    if ascending:
-        start, end, step = tiles - n + 1, tiles + 1, 1
-    else:
-        start, end, step = tiles, tiles - n, -1
-    labels = list(range(start, end, step))
+    start, end = tiles - n + 1, tiles + 1
+    labels = list(range(start, end))
+    if not ascending:
+        labels = labels[::-1]
     return bins.cat.rename_categories(labels).astype(int)
 
 
