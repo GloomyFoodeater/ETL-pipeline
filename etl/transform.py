@@ -24,7 +24,7 @@ def normalize(data):
     customers['email'] = customers['email'].str.strip()
 
     products = data['dim_product']
-    products['category'] = products['category'].str.strip().str.lower()
+    products['category'] = products['category'].str.strip().str.capitalize()
     products['name'] = products['name'].str.strip()
 
     orders = data['fact_order']

@@ -1,10 +1,10 @@
-# TODO: Output data frames without sorting
 from datetime import date
 
 import pandas as pd
 import streamlit as st
 import altair as alt
 
+from sort_widget import write_sort_widget
 from paginator import Paginator
 
 conn = st.connection('data_warehouse', type='sql')
@@ -70,61 +70,58 @@ def write_turnover_and_sales():
 def write_top_products():
     st.header('Top products')
 
-    categories = [None, 'Backpack', 'Wallet', 'Handbag', 'Shopper', 'Belt bag', 'Trinket']
+    sql_query = 'SELECT DISTINCT category FROM dim_product ORDER BY category'
+    categories = [None] + conn.query(sql_query).dropna()['category'].tolist()
     category = st.selectbox('Choose a category', categories)
-    left, right = st.columns(2)
-    sort_by = left.selectbox('Sort by', ['Turnover', 'Sales count'])
-    if sort_by == 'Turnover':
-        sort_by = 'turnover'
-    elif sort_by == 'Sales count':
-        sort_by = 'sales_count'
-    order_by = right.selectbox('Order by', ['DESC', 'ASC'])
+
+    sort_by, order_by = write_sort_widget('product', {
+        'Turnover': 'turnover',
+        'Sales count': 'sales_count'
+    })
 
     sql_query = f'''
     SELECT  name, sku, category, price, turnover, sales_count 
     FROM    dim_product
-    {f"WHERE p.category = '{category}'" if category else ''}
+    {f"WHERE category = '{category}'" if category else ''}
     ORDER BY {sort_by} {order_by}
     '''
     top_products = conn.query(sql_query)
+    top_products['price'] /= 100
     top_products['turnover'] /= 100
 
     product_paginator = Paginator(top_products, 'product')
-
     config = {
         'name': st.column_config.TextColumn('Product'),
         'sku': st.column_config.TextColumn('SKU'),
         'category': st.column_config.TextColumn('Category'),
-        'price': st.column_config.NumberColumn('Price', format='%s USD'),
+        'price': st.column_config.NumberColumn('Price', format='%s BYN'),
         'sales_count': st.column_config.NumberColumn('Sales count'),
-        'turnover': st.column_config.NumberColumn('Turnover', format='%s USD'),
+        'turnover': st.column_config.NumberColumn('Turnover', format='%s BYN'),
     }
     st.dataframe(product_paginator.get_page(), column_config=config, hide_index=True)
-
     product_paginator.write()
 
 
 def write_rfm_metrics():
     st.header('RFM metrics')
-    segments = [
-        None,
-        'Champions',
-        'Loyal Customers',
-        'Potential Loyalists',
-        'New Customers',
-        'Promising',
-        'Need Attention',
-        'About to Sleep',
-        'Cannot Lose Them',
-        'At Risk',
-        'Hibernating',
-        'Lost Customers',
-        'Potential Customers'
-    ]
 
-    sql_query = '''
+    sql_query = 'SELECT DISTINCT segment FROM dim_customer ORDER BY segment'
+    segments = [None] + conn.query(sql_query).dropna()['segment'].tolist()
+    segment = st.selectbox('Select segment', segments)
+
+    sort_by, order_by = write_sort_widget('customer', {
+        'Recency': 'recency',
+        'Monetary': 'monetary',
+        'Frequency': 'frequency'
+    })
+
+    if sort_by == 'recency':
+        sort_by = f'recency IS NULL {order_by}, recency '
+
+    sql_query = f'''
     SELECT  segment, CONCAT(first_name, ' ', last_name) name, email, recency, frequency, monetary
     FROM dim_customer
+    ORDER BY {sort_by} {order_by}
     '''
     customers = conn.query(sql_query)
     customers['monetary'] /= 100
@@ -132,10 +129,10 @@ def write_rfm_metrics():
                       .value_counts()
                       .reindex(segments[1:], fill_value=0)
                       .reset_index())
-    segment = st.selectbox('Select segment', segments)
     if segment:
         customers = customers[customers['segment'] == segment]
 
+    customer_paginator = Paginator(customers, 'customer')
     config = {
         'name': st.column_config.TextColumn('Name'),
         'recency': st.column_config.NumberColumn('R', format='%s days'),
@@ -143,11 +140,7 @@ def write_rfm_metrics():
         'monetary': st.column_config.NumberColumn('M', format='%s BYN'),
         'segment': st.column_config.TextColumn('Segment')
     }
-
-    customer_paginator = Paginator(customers, 'customer')
-
     st.dataframe(customer_paginator.get_page(), column_config=config, hide_index=True)
-
     customer_paginator.write()
 
     chart = alt.Chart(segment_counts).mark_arc().encode(
