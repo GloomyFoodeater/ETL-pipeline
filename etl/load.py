@@ -3,7 +3,7 @@ import os
 
 import pandas as pd
 import yaml
-from sqlalchemy import create_engine, MetaData, Table, Column, String, CheckConstraint, DateTime, ForeignKey
+from sqlalchemy import create_engine, MetaData, Table, Column, String, CheckConstraint, ForeignKey, Date
 from sqlalchemy.dialects.mysql import INTEGER, SMALLINT, TINYINT, BIGINT
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
@@ -36,7 +36,7 @@ def create_schema(engine):
         'dim_date',
         metadata_obj,
         Column('id', BIGINT(unsigned=True), primary_key=True, autoincrement=False),
-        Column('full_date', DateTime, nullable=False),
+        Column('full_date', Date, nullable=False),
         Column('year', SMALLINT(unsigned=True), nullable=False),
         Column('month', TINYINT(unsigned=True), nullable=False),
         Column('day', TINYINT(unsigned=True), nullable=False)

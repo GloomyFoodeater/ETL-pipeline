@@ -94,14 +94,15 @@ def add_total_price(data):
 
 def add_dim_date(data):
     dt = data['fact_order']['created_at'].dt
-    data['fact_order']['created_at_id'] = dt.strftime('%Y%m%d%H%M%S').astype(int)
+    data['fact_order']['created_at_id'] = dt.strftime('%Y%m%d').astype(int)
     data['dim_date'] = pd.DataFrame({
         'id': data['fact_order']['created_at_id'],
-        'full_date': data['fact_order']['created_at'],
+        'full_date': dt.date,
         'year': dt.year,
         'month': dt.month,
         'day': dt.day,
     })
+    data['dim_date'].drop_duplicates(subset=['id'], inplace=True)
 
 
 def get_score(series, ascending=True, tiles=5):
