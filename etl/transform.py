@@ -17,24 +17,29 @@ def map_field_names(data):
                 df.rename(columns=columns, inplace=True)
 
 
-def filter_data(data):
+def normalize(data):
     customers = data['dim_customer']
     customers['first_name'] = customers['first_name'].str.strip()
     customers['last_name'] = customers["last_name"].str.strip()
     customers['email'] = customers['email'].str.strip()
+
+    products = data['dim_product']
+    products['category'] = products['category'].str.strip().str.lower()
+    products['name'] = products['name'].str.strip()
+
+    orders = data['fact_order']
+    orders['status'] = orders['status'].str.strip().str.lower()
+
+
+def validate(data):
     schema = DataFrameSchema({
         'id': Column(int, nullable=False),
         'email': Column(str, Check.str_matches(r'^[^@]+@[^@]+\.[^@]+$'), nullable=False),
         'first_name': Column(str, Check.str_matches(r'^[A-Za-z]{1,50}$'), nullable=False),
         'last_name': Column(str, Check.str_matches(r'^[A-Za-z]{1,50}$'), nullable=False)
     }, drop_invalid_rows=True)
-    data['dim_customer'] = schema.validate(customers, lazy=True)
+    data['dim_customer'] = schema.validate(data['dim_customer'], lazy=True)
 
-    valid_customer_ids = data['dim_customer']['id']
-
-    products = data['dim_product']
-    products['category'] = products['category'].str.strip().str.lower()
-    products['name'] = products['name'].str.strip()
     schema = DataFrameSchema({
         'id': Column(int, nullable=False),
         'sku': Column(str, Check.str_length(20, 20), nullable=False),
@@ -42,45 +47,49 @@ def filter_data(data):
         'name': Column(str, Check.str_length(1, 50), nullable=False),
         'price': Column(int, Check.gt(0), nullable=False)
     }, drop_invalid_rows=True)
-    data['dim_product'] = schema.validate(products, lazy=True)
+    data['dim_product'] = schema.validate(data['dim_product'], lazy=True)
 
-    valid_product_ids = data['dim_product']['id']
-
-    orders = data['fact_order']
-    orders['status'] = orders['status'].str.strip().str.lower()
     schema = DataFrameSchema({
         'id': Column(int, nullable=False),
         'status': Column(str, Check.eq('delivered'), nullable=False),
-        'customer_id': Column(int, Check.isin(valid_customer_ids), nullable=False),
         'created_at': Column(datetime, Check.le(pd.Timestamp.now()), nullable=False)
     }, drop_invalid_rows=True)
-    data['fact_order'] = schema.validate(orders, lazy=True)
-
-    valid_order_ids = data['fact_order']['id']
+    data['fact_order'] = schema.validate(data['fact_order'], lazy=True)
 
     schema = DataFrameSchema({
         'id': Column(int, nullable=False),
-        'order_id': Column(int, Check.isin(valid_order_ids), nullable=False),
-        'product_id': Column(int, Check.isin(valid_product_ids), nullable=False),
         'quantity': Column(int, Check.gt(0), nullable=False),
         'unit_price': Column(int, Check.gt(0), nullable=False)
     }, drop_invalid_rows=True)
     data['fact_order_item'] = schema.validate(data['fact_order_item'], lazy=True)
 
-    orders_with_items = data['fact_order_item']['order_id'].unique()
 
-    data['fact_order'] = data['fact_order'][data['fact_order']['id'].isin(orders_with_items)]
+def filter_data(data):
+    valid_customer_ids = data['dim_customer']['id']
+    valid_product_ids = data['dim_product']['id']
+    data['fact_order'] = data['fact_order'][
+        (data['fact_order']['status'] == 'delivered') &
+        (data['fact_order']['customer_id'].isin(valid_customer_ids))
+        ]
+    valid_order_ids = data['fact_order']['id']
+    data['fact_order_item'] = data['fact_order_item'][
+        (data['fact_order_item']['order_id'].isin(valid_order_ids)) &
+        (data['fact_order_item']['product_id'].isin(valid_product_ids))
+        ].copy()
+    orders_with_items = data['fact_order_item']['order_id'].unique()
+    data['fact_order'] = data['fact_order'][
+        data['fact_order']['id'].isin(orders_with_items)
+    ].copy()
 
 
 def add_total_price(data):
-    fact_order = data['fact_order']
-    fact_order_item = data['fact_order_item']
-    fact_order_item['total_price'] = fact_order_item['quantity'] * fact_order_item['unit_price']
-    data['fact_order'] = (fact_order_item
+    order_items = data['fact_order_item']
+    order_items['total_price'] = order_items['quantity'] * order_items['unit_price']
+    data['fact_order'] = (order_items
                           .groupby('order_id')['total_price']
                           .sum()
                           .reset_index()
-                          .merge(fact_order, right_on='id', left_on='order_id', how='right'))
+                          .merge(data['fact_order'], right_on='id', left_on='order_id', how='right'))
 
 
 def add_dim_date(data):
@@ -216,6 +225,8 @@ def filter_columns(data):
 
 def transform(data: dict[str, pd.DataFrame]):
     map_field_names(data)
+    normalize(data)
+    validate(data)
     filter_data(data)
     add_dim_date(data)
     add_total_price(data)

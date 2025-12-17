@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Add dw schema creation">
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Add filtering and validating data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etl/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/transform.py" afterDir="false" />
@@ -329,7 +329,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765987921365</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Add filtering and validating data">
+      <option name="closed" value="true" />
+      <created>1766006160184</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1766006160184</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -371,7 +379,8 @@
     <MESSAGE value="Fix pagination of an empty container" />
     <MESSAGE value="Fix filtering undelivered orders" />
     <MESSAGE value="Add dw schema creation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add dw schema creation" />
+    <MESSAGE value="Add filtering and validating data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add filtering and validating data" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
