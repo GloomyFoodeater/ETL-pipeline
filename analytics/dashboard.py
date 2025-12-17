@@ -29,7 +29,7 @@ def write_turnover_and_sales():
         WHERE dt.full_date BETWEEN :start_date AND :end_date
     '''
     turnover, sales_count = conn.query(sql_query, params=query_params).loc[0, ['turnover', 'sales_count']]
-
+    turnover /= 100
     sql_query = '''
     SELECT dt.year, dt.month, COALESCE(SUM(fo.total_price), 0) AS turnover, COUNT(fo.id) AS sales_count
     FROM fact_order fo
@@ -39,6 +39,7 @@ def write_turnover_and_sales():
     ORDER BY dt.year, dt.month
     '''
     df = conn.query(sql_query, params=query_params)
+    df['turnover'] /= 100
 
     all_dates = pd.date_range(start=start_date, end=end_date, freq='MS')
 
@@ -56,7 +57,7 @@ def write_turnover_and_sales():
         x=alt.X('period', title='Month', sort=all_dates),
         y=alt.Y('turnover', title='Turnover')
     ).properties(title='Turnover by months')
-    turnover_col.text(f'Turnover: {turnover}')
+    turnover_col.text(f'Turnover: {turnover} BYN')
     turnover_col.altair_chart(chart)
     chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('period', title='Month', sort=all_dates),
@@ -86,6 +87,7 @@ def write_top_products():
     ORDER BY {sort_by} {order_by}
     '''
     top_products = conn.query(sql_query)
+    top_products['turnover'] /= 100
 
     product_paginator = Paginator(top_products, 'product')
 
@@ -125,6 +127,7 @@ def write_rfm_metrics():
     FROM dim_customer
     '''
     customers = conn.query(sql_query)
+    customers['monetary'] /= 100
     segment_counts = (customers['segment']
                       .value_counts()
                       .reindex(segments[1:], fill_value=0)
