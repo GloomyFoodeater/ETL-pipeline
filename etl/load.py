@@ -23,14 +23,7 @@ def create_schema(engine):
         Column('recency', INTEGER(unsigned=True)),
         Column('frequency', INTEGER(unsigned=True), nullable=False),
         Column('monetary', INTEGER(unsigned=True), nullable=False),
-        Column('r_score', SMALLINT(unsigned=True), nullable=False),
-        Column('f_score', SMALLINT(unsigned=True), nullable=False),
-        Column('m_score', SMALLINT(unsigned=True), nullable=False),
-        Column('rfm_code', String(3), nullable=False),
-        Column('segment', String(50), nullable=False),
-        CheckConstraint('r_score >= 0 AND r_score <= 5', name='r_score_check'),
-        CheckConstraint('f_score >= 0 AND f_score <= 5', name='f_score_check'),
-        CheckConstraint('m_score >= 0 AND m_score <= 5', name='m_score_check')
+        Column('segment', String(50), nullable=False)
     )
     Table(
         'dim_date',

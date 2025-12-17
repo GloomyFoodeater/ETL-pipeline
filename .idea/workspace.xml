@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Decompose filtering, validating and normalization, fix SettingWithCopyWarning">
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Change dim table to save only dates without time">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analytics/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/dashboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
@@ -75,7 +75,7 @@
       <recent name="D:\Asus\Projects\ETL-pipeline" />
     </key>
   </component>
-  <component name="RunManager" selected="Shell Script.dashboard">
+  <component name="RunManager" selected="Python.pipeline">
     <configuration name="generator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ETL-pipeline" />
       <option name="ENV_FILES" value="" />
@@ -347,7 +347,31 @@
       <option name="project" value="LOCAL" />
       <updated>1766007521844</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Fix start_date, end_date comparison on dashboard">
+      <option name="closed" value="true" />
+      <created>1766008791339</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1766008791339</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Change dim table to save only dates without time">
+      <option name="closed" value="true" />
+      <created>1766008842023</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1766008842023</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Change dim table to save only dates without time">
+      <option name="closed" value="true" />
+      <created>1766008970106</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1766008970106</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -391,7 +415,9 @@
     <MESSAGE value="Add dw schema creation" />
     <MESSAGE value="Add filtering and validating data" />
     <MESSAGE value="Decompose filtering, validating and normalization, fix SettingWithCopyWarning" />
-    <option name="LAST_COMMIT_MESSAGE" value="Decompose filtering, validating and normalization, fix SettingWithCopyWarning" />
+    <MESSAGE value="Fix start_date, end_date comparison on dashboard" />
+    <MESSAGE value="Change dim table to save only dates without time" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change dim table to save only dates without time" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

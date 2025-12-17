@@ -193,10 +193,6 @@ def filter_columns(data):
         'recency',
         'frequency',
         'monetary',
-        'r_score',
-        'f_score',
-        'm_score',
-        'rfm_code',
         'segment'
     ]]
     data['dim_product'] = data['dim_product'][[
