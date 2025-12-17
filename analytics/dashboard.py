@@ -17,13 +17,13 @@ def write_turnover_and_sales():
     start_date = left.date_input('Start date', date(today.year - 1, today.month, today.day))
     end_date = right.date_input('End date', today)
 
-    if start_date >= end_date:
+    if start_date > end_date:
         st.error('❌ Start date must be before or equal to end date')
         return
 
     query_params = {'start_date': start_date, 'end_date': end_date}
     sql_query = '''
-        SELECT SUM(fo.total_price) turnover, COUNT(fo.id) sales_count
+        SELECT COALESCE(SUM(fo.total_price), 0) turnover, COUNT(fo.id) sales_count
         FROM fact_order fo
         JOIN dim_date dt ON fo.created_at_id = dt.id
         WHERE dt.full_date BETWEEN :start_date AND :end_date
@@ -31,7 +31,7 @@ def write_turnover_and_sales():
     turnover, sales_count = conn.query(sql_query, params=query_params).loc[0, ['turnover', 'sales_count']]
 
     sql_query = '''
-    SELECT dt.year, dt.month, SUM(fo.total_price) AS turnover, COUNT(fo.id) AS sales_count
+    SELECT dt.year, dt.month, COALESCE(SUM(fo.total_price), 0) AS turnover, COUNT(fo.id) AS sales_count
     FROM fact_order fo
     JOIN dim_date dt ON fo.created_at_id = dt.id
     WHERE dt.full_date BETWEEN :start_date AND :end_date
