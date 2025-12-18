@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 
 def extract() -> dict[str, pd.DataFrame]:
-    with open('./../config.yaml', 'r') as f:
+    with open('config.yaml', 'r') as f:
         config = yaml.safe_load(f)
 
     print('Connecting to database...')

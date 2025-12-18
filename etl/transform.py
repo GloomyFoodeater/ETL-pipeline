@@ -9,7 +9,7 @@ from pandera.pandas import Column, DataFrameSchema, Check
 
 
 def map_field_names(data):
-    with open('../config.yaml', 'r', encoding='utf-8') as f:
+    with open('config.yaml', 'r', encoding='utf-8') as f:
         mappings = yaml.safe_load(f)['mappings']
         for key, df in data.items():
             columns = mappings[key]
@@ -115,14 +115,6 @@ def get_score(series, ascending=True, tiles=5):
     return bins.cat.rename_categories(labels).astype(int)
 
 
-def reverse_map(source):
-    reversed = {}
-    for k, values in source.items():
-        for v in values:
-            reversed[v] = k
-    return reversed
-
-
 def add_customer_metrics(data):
     today = datetime.today()
     r_agg = pd.NamedAgg(column='created_at', aggfunc=lambda dates: (today - dates.max()).days)
@@ -148,29 +140,6 @@ def add_customer_metrics(data):
             data['dim_customer']['m_score'].astype(int).astype(str)
     )
 
-    code_to_segment = reverse_map({
-        'Champions': {'555', '554', '544', '545', '454', '455', '445'},
-        'Loyal Customers': {'543', '444', '435', '355', '354', '345', '344', '335'},
-        'Potential Loyalists': {'553', '551', '552', '541', '542', '533', '532', '531',
-                                '452', '451', '442', '441', '431', '453', '433', '432',
-                                '423', '353', '352', '351', '342', '341', '333', '323'},
-        'New Customers': {'512', '511', '422', '421', '412', '411', '311'},
-        'Promising': {'525', '524', '523', '522', '521', '515', '514', '513',
-                      '425', '424', '413', '414', '415', '315', '314', '313'},
-        'Need Attention': {'535', '534', '443', '434', '343', '334', '325', '324'},
-        'About to sleep': {'331', '321', '312', '221', '213', '231', '241', '251'},
-        'Cannot Lose Them': {'155', '154', '144', '214', '215', '115', '114', '113'},
-        'At Risk': {'255', '254', '245', '244', '253', '252', '243', '242',
-                    '235', '234', '225', '224', '153', '152', '145', '143',
-                    '142', '135', '134', '133', '125', '124'},
-        'Hibernating': {'332', '322', '233', '232', '223', '222', '132', '123',
-                        '122', '212', '211'},
-        'Lost Customers': {'111', '112', '121', '131', '141', '151'}
-    })
-    data['dim_customer']['segment'] = (data['dim_customer']['rfm_code']
-                                       .map(code_to_segment)
-                                       .fillna('Potential Customers'))
-
 
 def add_product_metrics(data):
     t_agg = pd.NamedAgg(column='total_price', aggfunc='sum')
@@ -193,7 +162,7 @@ def filter_columns(data):
         'recency',
         'frequency',
         'monetary',
-        'segment'
+        'rfm_code'
     ]]
     data['dim_product'] = data['dim_product'][[
         'id',

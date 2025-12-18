@@ -1,7 +1,9 @@
 import streamlit as st
 
 import altair as alt
+import yaml
 
+from utils.collections import reverse_map
 from .paginator import Paginator
 from .sort_widget import write_sort_widget
 
@@ -9,8 +11,10 @@ from .sort_widget import write_sort_widget
 def write_customer_section(connection):
     st.header('RFM metrics')
 
-    sql_query = 'SELECT DISTINCT segment FROM dim_customer ORDER BY segment'
-    segments = [None] + connection.query(sql_query).dropna()['segment'].tolist()
+    with open('config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+    segment_map = config['segment_map']
+    segments = [None, 'Unclassified'] + list(segment_map.keys())
     segment = st.selectbox('Select segment', segments)
 
     sort_by, order_by = write_sort_widget('customer', {
@@ -23,11 +27,16 @@ def write_customer_section(connection):
         sort_by = f'recency IS NULL {order_by}, recency '
 
     sql_query = f'''
-    SELECT  segment, CONCAT(first_name, ' ', last_name) name, email, recency, frequency, monetary
+    SELECT rfm_code, CONCAT(first_name, ' ', last_name) name, email, recency, frequency, monetary
     FROM dim_customer
     ORDER BY {sort_by} {order_by}
     '''
     customers = connection.query(sql_query)
+
+    code_to_segment = reverse_map(segment_map)
+    customers['segment'] = (customers['rfm_code']
+                            .map(code_to_segment)
+                            .fillna('Unclassified'))
     customers['monetary'] /= 100
     segment_counts = (customers['segment']
                       .value_counts()

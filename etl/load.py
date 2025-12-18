@@ -3,7 +3,7 @@ import os
 
 import pandas as pd
 import yaml
-from sqlalchemy import create_engine, MetaData, Table, Column, String, CheckConstraint, ForeignKey, Date
+from sqlalchemy import create_engine, MetaData, Table, Column, String, ForeignKey, Date
 from sqlalchemy.dialects.mysql import INTEGER, SMALLINT, TINYINT, BIGINT
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
@@ -23,7 +23,7 @@ def create_schema(engine):
         Column('recency', INTEGER(unsigned=True)),
         Column('frequency', INTEGER(unsigned=True), nullable=False),
         Column('monetary', INTEGER(unsigned=True), nullable=False),
-        Column('segment', String(50), nullable=False)
+        Column('rfm_code', String(3), nullable=False)
     )
     Table(
         'dim_date',
@@ -68,7 +68,7 @@ def create_schema(engine):
 
 
 def load(clean_data: dict[str, pd.DataFrame]) -> None:
-    with open('./../config.yaml', 'r') as f:
+    with open('config.yaml', 'r') as f:
         config = yaml.safe_load(f)
 
     engine = create_engine(config['data_warehouse_url'])
