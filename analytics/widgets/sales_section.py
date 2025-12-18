@@ -25,6 +25,7 @@ def write_sales_section(connection):
     '''
     turnover, sales_count = connection.query(sql_query, params=query_params).loc[0, ['turnover', 'sales_count']]
     turnover /= 100
+    sales_count = int(sales_count)
     sql_query = '''
     SELECT dt.year, dt.month, COALESCE(SUM(fo.total_price), 0) AS turnover, COUNT(fo.id) AS sales_count
     FROM fact_order fo

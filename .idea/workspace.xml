@@ -401,7 +401,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766016668974</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Split dashboard into multiple files">
+      <option name="closed" value="true" />
+      <created>1766016794533</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1766016794535</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
