@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Scale currency on dashboard">
-      <change afterPath="$PROJECT_DIR$/analytics/sort_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analytics/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/dashboard.py" afterDir="false" />
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Split dashboard into multiple files">
       <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etl/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/transform.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,11 +67,13 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Asus\Projects\ETL-pipeline\analytics\widgets" />
+      <recent name="D:\Asus\Projects\ETL-pipeline\analytics\sections" />
       <recent name="D:\Asus\Projects\ETL-pipeline\.streamlit" />
       <recent name="D:\Asus\Projects\ETL-pipeline" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.pipeline">
+  <component name="RunManager" selected="Shell Script.dashboard">
     <configuration name="generator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ETL-pipeline" />
       <option name="ENV_FILES" value="" />
@@ -387,7 +385,23 @@
       <option name="project" value="LOCAL" />
       <updated>1766010300038</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Scale currency, change category and segment selectors, add sort by R, F, M">
+      <option name="closed" value="true" />
+      <created>1766015068760</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1766015068760</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Split dashboard into multiple files">
+      <option name="closed" value="true" />
+      <created>1766016668974</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1766016668974</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -435,7 +449,9 @@
     <MESSAGE value="Change dim table to save only dates without time" />
     <MESSAGE value="Remove rfm_metrics from data warehouse" />
     <MESSAGE value="Scale currency on dashboard" />
-    <option name="LAST_COMMIT_MESSAGE" value="Scale currency on dashboard" />
+    <MESSAGE value="Scale currency, change category and segment selectors, add sort by R, F, M" />
+    <MESSAGE value="Split dashboard into multiple files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Split dashboard into multiple files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
