@@ -1,4 +1,3 @@
-# TODO: Remake id generation logic
 import os
 
 import pandas as pd
@@ -6,9 +5,6 @@ import yaml
 from sqlalchemy import create_engine, MetaData, Table, Column, String, ForeignKey, Date
 from sqlalchemy.dialects.mysql import INTEGER, SMALLINT, TINYINT, BIGINT
 from sqlalchemy_utils import database_exists, create_database, drop_database
-
-from etl.extract import extract
-from etl.transform import transform
 
 
 def create_schema(engine):
@@ -86,11 +82,3 @@ def load(clean_data: dict[str, pd.DataFrame]) -> None:
         table_order = ['dim_date', 'dim_customer', 'dim_product', 'fact_order', 'fact_order_item']
         for table_name in table_order:
             clean_data[table_name].to_sql(table_name, con=connection, if_exists='append', index=False)
-
-
-if __name__ == "__main__":
-    print('Extracting data...')
-    data = extract()
-    print('Transforming data...')
-    transform(data)
-    load(data)

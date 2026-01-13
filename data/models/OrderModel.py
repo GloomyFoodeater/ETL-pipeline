@@ -3,7 +3,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel
 
-from models.OrderItemModel import OrderItemModel
+from .OrderItemModel import OrderItemModel
 
 
 class OrderModel(BaseModel):

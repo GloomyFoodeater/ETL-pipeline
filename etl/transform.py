@@ -3,8 +3,6 @@ from datetime import datetime
 import pandas as pd
 import yaml
 
-from etl.extract import extract
-from utils.console import print_centered
 from pandera.pandas import Column, DataFrameSchema, Check
 
 
@@ -199,17 +197,3 @@ def transform(data: dict[str, pd.DataFrame]):
     add_customer_metrics(data)
     add_product_metrics(data)
     filter_columns(data)
-
-
-if __name__ == '__main__':
-    print('Extracting data...')
-    data = extract()
-    print('Transforming data...')
-    print('Done!')
-    transform(data)
-    if data:
-        print_centered('Transformed data', ' ')
-        for (k, df) in data.items():
-            print_centered(k)
-            print(f'{k}: len(df) = {len(df)}')
-            # print(df.head())
