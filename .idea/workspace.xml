@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Fix sales count format">
-      <change afterPath="$PROJECT_DIR$/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/collections.py" afterDir="false" />
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Move segment mapping to dashboard, fix access to config file">
+      <change afterPath="$PROJECT_DIR$/data/json_source.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/models/CustomerModel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/models/OrderItemModel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/models/OrderModel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/models/ProductModel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/sql_source.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analytics/widgets/customers_section.py" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/widgets/customers_section.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/generator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etl/extract.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/extract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etl/load.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/load.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etl/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/transform.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,10 +60,12 @@
     "Python.dashboard.executor": "Run",
     "Python.etl.pipeline.executor": "Run",
     "Python.extract.executor": "Run",
+    "Python.fastapi.executor": "Run",
     "Python.generator.executor": "Run",
     "Python.load.executor": "Debug",
     "Python.main.executor": "Run",
     "Python.pipeline.executor": "Run",
+    "Python.server.executor": "Run",
     "Python.streamlit.executor": "Run",
     "Python.transform.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -87,7 +89,7 @@
       <recent name="D:\Asus\Projects\ETL-pipeline" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.pipeline">
+  <component name="RunManager" selected="Python.dashboard">
     <configuration name="dashboard" type="PythonConfigurationType" factoryName="Python">
       <module name="ETL-pipeline" />
       <option name="ENV_FILES" value="" />
@@ -98,7 +100,7 @@
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="Python 3.13 (ETL-pipeline)" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="D:\Asus\Projects\ETL-pipeline" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -387,7 +389,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766046419799</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Move segment mapping to dashboard, fix access to config file">
+      <option name="closed" value="true" />
+      <created>1766079932531</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1766079932531</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -438,7 +448,8 @@
     <MESSAGE value="Scale currency, change category and segment selectors, add sort by R, F, M" />
     <MESSAGE value="Split dashboard into multiple files" />
     <MESSAGE value="Fix sales count format" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix sales count format" />
+    <MESSAGE value="Move segment mapping to dashboard, fix access to config file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Move segment mapping to dashboard, fix access to config file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
