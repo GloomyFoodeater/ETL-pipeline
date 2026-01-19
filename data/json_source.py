@@ -2,30 +2,36 @@ from typing import List
 
 import pandas as pd
 
-from models.CustomerModel import CustomerModel
+from generator import generate_products, generate_orders
 from models.ProductModel import ProductModel
 from models.OrderModel import OrderModel
 
-from generator import generate
-
 from fastapi import FastAPI
 
-customers, products, orders, order_items = [df.replace({pd.NaT: None}).to_dict(orient="records") for df in generate()]
-orders = [
-    {**order, "items": [{
-        "product_id": item["product_id"],
-        "order_item_quantity": item["order_item_quantity"],
-        "order_item_unit_price": item["order_item_unit_price"]
-    } for item in order_items if item["order_id"] == order["order_id"]]}
-    for order in orders
-]
+def get_data():
+    products = generate_products(100)
+    orders, order_items = generate_orders(500, products)
+    orders.replace({pd.NaT: None}, inplace=True)
 
+    products = products.to_dict(orient="records")
+    orders = (orders
+              .rename(columns={"order_date": "orderDate", "payment_date": "paymentDate", "shipping_date": "shippingDate",
+                               "delivery_date": "deliveryDate", "cancel_date": "cancelDate", "return_date": "returnDate"})
+              .to_dict(orient="records"))
+    order_items = order_items.to_dict(orient="records")
+
+    orders = [{
+        **order,
+        "items": [{
+            "productId": item["product_id"],
+            "quantity": item["quantity"],
+            "unitPrice": item["unit_price"]
+        } for item in order_items if item["order_id"] == order["id"]]
+    } for order in orders]
+    return products, orders
+
+products, orders = get_data()
 app = FastAPI()
-
-
-@app.get("/customers", response_model=List[CustomerModel])
-async def get_customers():
-    return customers
 
 
 @app.get("/products", response_model=List[ProductModel])

@@ -7,13 +7,12 @@ from .OrderItemModel import OrderItemModel
 
 
 class OrderModel(BaseModel):
-    order_id: int
-    customer_id: int
-    order_status: str
-    order_date: datetime
-    order_payment_date: Optional[datetime]
-    order_shipping_date: Optional[datetime]
-    order_delivery_date: Optional[datetime]
-    order_cancel_date: Optional[datetime]
-    order_return_date: Optional[datetime]
+    id: int
+    status: str
+    orderDate: datetime
+    paymentDate: Optional[datetime]
+    shippingDate: Optional[datetime]
+    deliveryDate: Optional[datetime]
+    cancelDate: Optional[datetime]
+    returnDate: Optional[datetime]
     items: List[OrderItemModel]
