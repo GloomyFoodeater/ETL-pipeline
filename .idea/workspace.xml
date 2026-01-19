@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Add dev manual reloading to dashboard (caching problem)">
+    <list default="true" id="3137cae6-ac0c-4029-ac70-7196fa276154" name="Changes" comment="Add truncation of warehouse">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/json_source.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/json_source.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/CustomerModel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/OrderItemModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/models/OrderItemModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/OrderModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/models/OrderModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/ProductModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/models/ProductModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sql_source.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/sql_source.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/diagrams/data_structure.drawio" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etl/extract.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/extract.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etl/load.py" beforeDir="false" afterPath="$PROJECT_DIR$/etl/load.py" afterDir="false" />
@@ -464,7 +458,23 @@
       <option name="project" value="LOCAL" />
       <updated>1768864189549</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Change field names of generator and data sources">
+      <option name="closed" value="true" />
+      <created>1768864592365</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1768864592365</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Add truncation of warehouse">
+      <option name="closed" value="true" />
+      <created>1768864639468</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1768864639468</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -491,8 +501,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix extract module (remove transactions, rename keys of dictionary output)" />
-    <MESSAGE value="Fix order_item_id generation" />
     <MESSAGE value="Fix order_item_id values and customer count in generator" />
     <MESSAGE value="Implement transform, load, pipeline and dashboard" />
     <MESSAGE value="Add pie chart for customer segments" />
@@ -516,7 +524,9 @@
     <MESSAGE value="Add another data source" />
     <MESSAGE value="Fix module import" />
     <MESSAGE value="Add dev manual reloading to dashboard (caching problem)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add dev manual reloading to dashboard (caching problem)" />
+    <MESSAGE value="Change field names of generator and data sources" />
+    <MESSAGE value="Add truncation of warehouse" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add truncation of warehouse" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

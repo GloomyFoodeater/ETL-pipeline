@@ -3,10 +3,10 @@ from load import load
 from transform import transform
 
 if __name__ == '__main__':
-    print('Extracting data...')
+    print("Extracting data...")
     data = extract()
-    print('Transforming data...')
+    print("Transforming data...")
     transform(data)
-    print('Saving data...')
+    print("Saving data...")
     load(data)
-    print('Done!')
+    print("Done!")
