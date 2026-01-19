@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 import yaml
-from sqlalchemy import create_engine, MetaData, Table, Column, String, ForeignKey, Date
+from sqlalchemy import create_engine, MetaData, Table, Column, String, ForeignKey, Date, text
 from sqlalchemy.dialects.mysql import INTEGER, SMALLINT, TINYINT, BIGINT
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
@@ -79,6 +79,14 @@ def load(clean_data: dict[str, pd.DataFrame]) -> None:
         create_schema(engine)
 
     with engine.begin() as connection:
+        if engine.dialect.name == 'mysql':
+            connection.execute(text("SET FOREIGN_KEY_CHECKS = 0"))
+        truncate_order = ['fact_order_item', 'fact_order', 'dim_product', 'dim_customer', 'dim_date']
+        for table_name in truncate_order:
+            connection.execute(text(f"TRUNCATE TABLE {table_name}"))
+        if engine.dialect.name == 'mysql':
+            connection.execute(text("SET FOREIGN_KEY_CHECKS = 1"))
+
         table_order = ['dim_date', 'dim_customer', 'dim_product', 'fact_order', 'fact_order_item']
         for table_name in table_order:
             clean_data[table_name].to_sql(table_name, con=connection, if_exists='append', index=False)
