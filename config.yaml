@@ -1,25 +1,29 @@
 sql_source_url: 'mysql://root:admin@127.0.0.1:3306/ecommerce_sample'
+api_source_url:  'http://127.0.0.1:8000'
 data_warehouse_url: 'mysql://root:admin@localhost:3306/e_commerce_dw'
 mappings:
   customer:
-    customer_id: id
-    customer_email: email
-    customer_last_name: last_name
-    customer_first_name: first_name
+    id: [customer_id]
+    email: [customer_email]
+    last_name: [customer_last_name]
+    first_name: [customer_first_name]
   product:
-    product_id: id
-    product_sku: sku
-    product_category: category
-    product_name: name
-    product_price: price
+    id: [product_id]
+    sku: [product_sku]
+    category: [product_category]
+    name: [product_name]
+    price: [product_price]
   order:
-    order_id: id
-    order_status: status
-    order_date: created_at
+    id: [order_id]
+    customer_id: [customerId]
+    status: [order_status]
+    created_at: [order_date, orderDate]
   order_item:
-    order_item_id: id
-    order_item_quantity: quantity
-    order_item_unit_price: unit_price
+    id: [order_item_id]
+    order_id: [orderId]
+    product_id: [productId]
+    quantity: [order_item_quantity]
+    unit_price: [order_item_unit_price, unitPrice]
 segment_map:
   Champions: [ '555', '554', '544', '545', '454', '455', '445' ]
   Loyal Customers: [

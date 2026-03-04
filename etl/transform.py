@@ -1,15 +1,24 @@
+# TODO: Merge data from 2 data source
+# TODO: Remake id generation logic
 from datetime import datetime
 
+import numpy as np
 import pandas as pd
 import yaml
 
 from pandera.pandas import Column, DataFrameSchema, Check
 
+from utils.collections import reverse_map
+from etl.extract import extract_api_source, extract_sql_source
+
 
 def map_field_names(data):
-    with open("config.yaml", "r", encoding="utf-8") as f:
+    with open("../config.yaml", "r", encoding="utf-8") as f:
         mappings = yaml.safe_load(f)["mappings"]
+        mappings = {k: reverse_map(v) for k, v in mappings.items()}
         for key, df in data.items():
+            if df is None:
+                continue
             columns = mappings[key]
             if columns:
                 df.rename(columns=columns, inplace=True)
@@ -17,9 +26,10 @@ def map_field_names(data):
 
 def normalize(data):
     customers = data["customer"]
-    customers["first_name"] = customers["first_name"].str.strip()
-    customers["last_name"] = customers["last_name"].str.strip()
-    customers["email"] = customers["email"].str.strip()
+    if customers is not None:
+        customers["first_name"] = customers["first_name"].str.strip()
+        customers["last_name"] = customers["last_name"].str.strip()
+        customers["email"] = customers["email"].str.strip()
 
     products = data["product"]
     products["category"] = products["category"].str.strip().str.capitalize()
@@ -28,15 +38,18 @@ def normalize(data):
     orders = data["order"]
     orders["status"] = orders["status"].str.strip().str.lower()
 
+    orders["created_at"] = pd.to_datetime(orders["created_at"])
+
 
 def validate(data):
-    schema = DataFrameSchema({
-        "id": Column(int, nullable=False),
-        "email": Column(str, Check.str_matches(r"^[^@]+@[^@]+\.[^@]+$"), nullable=False),
-        "first_name": Column(str, Check.str_matches(r"^[A-Za-z]{1,50}$"), nullable=False),
-        "last_name": Column(str, Check.str_matches(r"^[A-Za-z]{1,50}$"), nullable=False)
-    }, drop_invalid_rows=True)
-    data["customer"] = schema.validate(data["customer"], lazy=True)
+    if data["customer"] is not None:
+        schema = DataFrameSchema({
+            "id": Column(int, nullable=False),
+            "email": Column(str, Check.str_matches(r"^[^@]+@[^@]+\.[^@]+$"), nullable=False),
+            "first_name": Column(str, Check.str_matches(r"^[A-Za-z]{1,50}$"), nullable=False),
+            "last_name": Column(str, Check.str_matches(r"^[A-Za-z]{1,50}$"), nullable=False)
+        }, drop_invalid_rows=True)
+        data["customer"] = schema.validate(data["customer"], lazy=True)
 
     schema = DataFrameSchema({
         "id": Column(int, nullable=False),
@@ -49,7 +62,7 @@ def validate(data):
 
     schema = DataFrameSchema({
         "id": Column(int, nullable=False),
-        "status": Column(str, Check.eq("delivered"), nullable=False),
+        "status": Column(str, nullable=False),
         "created_at": Column(datetime, Check.le(pd.Timestamp.now()), nullable=False)
     }, drop_invalid_rows=True)
     data["order"] = schema.validate(data["order"], lazy=True)
@@ -63,11 +76,11 @@ def validate(data):
 
 
 def filter_data(data):
-    valid_customer_ids = data["customer"]["id"]
+    valid_customer_ids = data["customer"]["id"] if data["customer"] is not None else []
     valid_product_ids = data["product"]["id"]
     data["order"] = data["order"][
         (data["order"]["status"] == "delivered") &
-        (data["order"]["customer_id"].isin(valid_customer_ids))
+        ((data["customer"] is None) | (data["order"]["customer_id"].isin(valid_customer_ids)))
         ]
     valid_order_ids = data["order"]["id"]
     data["order_item"] = data["order_item"][
@@ -187,13 +200,41 @@ def filter_columns(data):
     ]]
 
 
-def transform(data):
-    map_field_names(data)
-    normalize(data)
-    validate(data)
-    filter_data(data)
-    add_dim_date(data)
-    add_total_price(data)
-    add_customer_metrics(data)
-    add_product_metrics(data)
-    filter_columns(data)
+def flatten_api_data(data):
+    # TODO: Check empty items
+    data["order"] = data["order"][data["order"]['items'].apply(lambda x: x is not None and len(x) > 0)]
+    data["order_item"] = data["order"].explode("items", ignore_index=True)[["id", "items"]]
+    order_ids = data["order_item"]["id"]
+    order_items = data["order_item"]["items"].apply(pd.Series)
+    data["order_item"] = pd.concat([order_ids, order_items], axis=1).rename(columns={"id": "orderId"})
+    data["order_item"]["id"] = data["order_item"].index
+
+    data["order"] = data["order"][["id", "status", "orderDate"]].copy()
+
+    data["order"]["customerId"] = None
+    data["customer"] = None
+
+
+def merge(sql_data, api_data):
+    pass
+    # TODO: Implement merging
+
+
+def transform(sql_data, api_data):
+    api_data['order']['items'] = api_data['order']['items'].apply(lambda _: [])
+    flatten_api_data(api_data)
+    for data in (api_data, sql_data):
+        map_field_names(data)
+        normalize(data)
+        validate(data)
+        filter_data(data)
+    merge(sql_data, api_data)
+    add_dim_date(sql_data)
+    add_total_price(sql_data)
+    add_customer_metrics(sql_data)
+    add_product_metrics(sql_data)
+    filter_columns(sql_data)
+
+
+if __name__ == "__main__":
+    transform(extract_sql_source(), extract_api_source())
