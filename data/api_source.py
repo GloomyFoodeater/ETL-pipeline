@@ -1,5 +1,6 @@
 from typing import List
 
+import uvicorn
 import pandas as pd
 
 from generator import generate_products, generate_orders
@@ -42,3 +43,6 @@ async def get_products():
 @app.get("/orders", response_model=List[OrderModel])
 async def get_orders():
     return orders
+
+if __name__ == "__main__":
+    uvicorn.run("api_source:app", host="127.0.0.1", port=8000, reload=True)

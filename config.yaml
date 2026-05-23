@@ -1,6 +1,6 @@
-sql_source_url: 'mysql://root:admin@127.0.0.1:3306/ecommerce_sample'
+sql_source_url: 'mysql://root@127.0.0.1:3306/ecommerce_sample'
 api_source_url:  'http://127.0.0.1:8000'
-data_warehouse_url: 'mysql://root:admin@localhost:3306/e_commerce_dw'
+data_warehouse_url: 'mysql://root@localhost:3306/e_commerce_dw'
 mappings:
   customer:
     id: [customer_id]

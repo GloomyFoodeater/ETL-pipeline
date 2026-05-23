@@ -11,7 +11,7 @@ def create_schema(engine):
     Table(
         "dim_customer",
         metadata_obj,
-        Column("id", INTEGER(unsigned=True), primary_key=True),
+        Column("id", String(50), primary_key=True),
         Column("last_name", String(50), nullable=False),
         Column("first_name", String(50), nullable=False),
         Column("email", String(100), nullable=False),
@@ -32,7 +32,7 @@ def create_schema(engine):
     Table(
         "dim_product",
         metadata_obj,
-        Column("id", INTEGER(unsigned=True), primary_key=True),
+        Column("id", String(50), primary_key=True),
         Column("sku", String(20), nullable=False),
         Column("category", String(50), nullable=False),
         Column("name", String(50), nullable=False),
@@ -43,15 +43,15 @@ def create_schema(engine):
     Table(
         "fact_order",
         metadata_obj,
-        Column("id", INTEGER(unsigned=True), primary_key=True),
-        Column("customer_id", ForeignKey("dim_customer.id"), nullable=False),
+        Column("id", String(50), primary_key=True),
+        Column("customer_id", ForeignKey("dim_customer.id"), nullable=True),
         Column("created_at_id", ForeignKey("dim_date.id"), nullable=False),
         Column("total_price", INTEGER(unsigned=True), nullable=False)
     )
     Table(
         "fact_order_item",
         metadata_obj,
-        Column("id", INTEGER(unsigned=True), primary_key=True),
+        Column("id", String(50), primary_key=True),
         Column("order_id", ForeignKey("fact_order.id"), nullable=False),
         Column("product_id", ForeignKey("dim_product.id"), nullable=False),
         Column("quantity", SMALLINT(unsigned=True), nullable=False),
@@ -71,7 +71,7 @@ def load(data):
         "dim_date": data["dim_date"],
     }
     
-    with open("config.yaml", "r") as f:
+    with open("../config.yaml", "r") as f:
         config = yaml.safe_load(f)
 
     engine = create_engine(config["data_warehouse_url"])

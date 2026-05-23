@@ -1,5 +1,3 @@
-# TODO: Merge data from 2 data source
-# TODO: Remake id generation logic
 from datetime import datetime
 
 import numpy as np
@@ -201,40 +199,57 @@ def filter_columns(data):
 
 
 def flatten_api_data(data):
-    # TODO: Check empty items
     data["order"] = data["order"][data["order"]['items'].apply(lambda x: x is not None and len(x) > 0)]
     data["order_item"] = data["order"].explode("items", ignore_index=True)[["id", "items"]]
     order_ids = data["order_item"]["id"]
     order_items = data["order_item"]["items"].apply(pd.Series)
     data["order_item"] = pd.concat([order_ids, order_items], axis=1).rename(columns={"id": "orderId"})
     data["order_item"]["id"] = data["order_item"].index
+    if "quantity" not in data["order_item"].columns:
+        data["order_item"]["quantity"] = -1
+    if "unitPrice" not in data["order_item"].columns:
+        data["order_item"]["unitPrice"] = -1
+    if "productId" not in data["order_item"].columns:
+        data["order_item"]["productId"] = -1
 
     data["order"] = data["order"][["id", "status", "orderDate"]].copy()
-
     data["order"]["customerId"] = None
     data["customer"] = None
 
 
+def add_prefix_safe(df, column_name, prefix):
+    if df is not None and column_name in df.columns:
+        df[column_name] = df[column_name].map(lambda x: f"{prefix}_{int(x)}" if pd.notnull(x) else None)
+
+
 def merge(sql_data, api_data):
-    pass
-    # TODO: Implement merging
+    datasets = [('sql', sql_data), ('api', api_data)]
+    for prefix, dataset in datasets:
+        add_prefix_safe(dataset['order_item'], 'order_id', prefix)
+        add_prefix_safe(dataset['order'], 'customer_id', prefix)
+        add_prefix_safe(dataset['order_item'], 'product_id', prefix)
+        for df in dataset.values():
+            add_prefix_safe(df, 'id', prefix)
+
+    merged_data = {'customer': pd.concat([sql_data['customer'], api_data['customer']], ignore_index=True),
+                   'product': pd.concat([sql_data['product'], api_data['product']], ignore_index=True),
+                   'order': pd.concat([sql_data['order'], api_data['order']], ignore_index=True),
+                   'order_item': pd.concat([sql_data['order_item'], api_data['order_item']], ignore_index=True)}
+    return merged_data
 
 
 def transform(sql_data, api_data):
-    api_data['order']['items'] = api_data['order']['items'].apply(lambda _: [])
+    api_data['order']['items'] = api_data['order']['items']
     flatten_api_data(api_data)
     for data in (api_data, sql_data):
         map_field_names(data)
         normalize(data)
         validate(data)
         filter_data(data)
-    merge(sql_data, api_data)
-    add_dim_date(sql_data)
-    add_total_price(sql_data)
-    add_customer_metrics(sql_data)
-    add_product_metrics(sql_data)
-    filter_columns(sql_data)
-
-
-if __name__ == "__main__":
-    transform(extract_sql_source(), extract_api_source())
+    merged_data = merge(sql_data, api_data)
+    add_dim_date(merged_data)
+    add_total_price(merged_data)
+    add_customer_metrics(merged_data)
+    add_product_metrics(merged_data)
+    filter_columns(merged_data)
+    return merged_data
